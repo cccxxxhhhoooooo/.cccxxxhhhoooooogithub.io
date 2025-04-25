@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二十四节气</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* 新增定位 */
+}
+
+/* 添加背景遮罩层 */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/背景2.jpg');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5; /* 透明度设置（0-1）0.5表示50%透明 */
+        z-index: -1;
+    }
+
+    /* 调整原有子元素的层级 */
+    header,
+    .content-wrapper,
+    footer {
+      position: relative;
+      z-index: 1; /* 确保内容显示在遮罩层上方 */
+    }
+    header {
+      color: rgb(76, 156, 232);
+      text-align: center;
+      padding: 15px 20px;
+      animation: fadeIn 1s ease-in-out;
+      background: linear-gradient(to right, #a8de79, #98d9b6);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .top-left-link,.top-right-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 1em;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .top-left-link:hover,.top-right-link:hover {
+      color: #006400;
+    }
+    .icon {
+      font-size: 1.4em;
+      
+    }
+    
+    /* 右侧定位 */
+    .top-right-link {
+        right: 20px;
+    }
+
+    /* 左侧定位 */
+    .top-left-link {
+        left: 20px;
+    }
+    section {
+      padding: 15px;
+      margin: 15px;
+      background-color: transparent;
+      box-shadow: 0 0 8px rgba(117, 116, 116, 0.3);
+      transition: transform 0.3s ease-in-out;
+      animation: slideIn 1s ease-in-out;
+      opacity: 0;
+      transform: translateX(-50px);
+      animation-fill-mode: forwards;
+      flex-grow: 1;
+      border-radius: 10px;
+      
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    section:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    section:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    section:hover {
+    background: linear-gradient(to right, #f5f7dc, #eef2f0); /* 改变背景渐变 */
+    transform: translateY(-5px); /* 向上移动 */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* 增加阴影强度 */
+}
+
+    h1 {
+      font-family: 'Times New Roman', serif;
+      font-size: 2.8em;
+      /* 增强渐变对比度 */
+      background: linear-gradient(30deg, #71d0eb, #397ae8d4); 
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* 优化文本渲染 */
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      /* 调整阴影参数 */
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); /* 改为白色阴影提升对比度 */
+      letter-spacing: 1px;
+      animation: titleAnimation 1.5s ease-in-out;
+      margin: 10px 0;
+    }
+
+    @keyframes titleAnimation {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    h2 {
+      background: linear-gradient(45deg, #f4ca6f, #d35400);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* 优化渲染 */
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      /* 添加细微描边 */
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+      font-size: 1.6em;
+      margin: 10px 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    li {
+      margin-bottom: 8px;
+      transition: transform 0.3s ease-in-out;
+      font-size: 1.1em;
+      line-height: 1.4;
+    }
+
+    li:hover {
+      transform: translateX(5px);
+    }
+
+    footer {
+      animation: fadeIn 1s ease-in-out;
+      background: linear-gradient(to right, #d1efb7, #98d9b6);
+      color: rgb(52, 143, 227);
+      text-align: center;
+      padding: 8px;
+      font-size: 0.9em;
+      flex-shrink: 0;
+    }
+    
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="主界面.html" class="top-left-link">
+      <span class="icon fas fa-arrow-left"></span>
+  </a>
+    <a href="气温.html" class="top-right-link">
+      <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <h1>二十四节气</h1>
+    <p>中国古代订立的用来指导农事的补充历法</p>
+  </header>
+
+  <div class="content-wrapper">
+    <section>
+      <h2>起源与初步形成</h2>
+      <ul>
+        <li>早在远古时代，中国古人就开始观察天文气象、物候变化来指导生产生活。据考古发现，在距今6000多年前的仰韶文化时期，就有了反映季节变化的遗迹。</li>
+        <li>到了夏商时期，人们已经有了初步的季节概念，如"春""秋"等字已出现在当时的甲骨文当中，表明那时的人们已开始区分不同的季节。</li>
+        <li>西周时期，人们通过观测北斗七星的斗柄指向来确定季节，《鹖冠子》中记载："斗柄指东，天下皆春；斗柄指南，天下皆夏；斗柄指西，天下皆秋；斗柄指北，天下皆冬。"这是早期对季节划分的一种直观认识。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>发展与完善</h2>
+      <ul>
+        <li>春秋战国时期，随着天文观测技术的不断进步，人们对天体运行规律有了更深入的认识。此时，二十四节气中的春分、秋分、夏至、冬至四个节气已被确定下来，这是二十四节气发展过程中的重要里程碑。《尚书·尧典》中记载了"日中星鸟，以殷仲春""日永星火，以正仲夏""宵中星虚，以殷仲秋""日短星昴，以正仲冬"，描述了通过观测星宿来确定季节的方法。</li>
+        <li>秦汉时期，二十四节气完全确立。《淮南子》一书完整地记载了二十四节气的名称和顺序，与现代的二十四节气已基本相同。同时，《太初历》将二十四节气纳入历法体系，明确了二十四节气的天文位置，以太阳在黄道上的位置来划分节气，使节气的确定更加科学准确。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>传承与影响</h2>
+      <ul>
+        <li>二十四节气在汉代以后得到了广泛的传承和发展，不仅在农业生产中发挥着重要作用，还逐渐融入了人们的日常生活和文化传统中。各个朝代都有对二十四节气的研究和记载，如东汉的《四民月令》、北魏的《齐民要术》等农书中，都详细介绍了二十四节气与农事活动的关系。</li>
+        <li>随着时间的推移，二十四节气对中国文化的影响日益深远。它不仅与天文、气象、农业等学科密切相关，还与文学、艺术、民俗等领域相互交融。如在文学作品中，有大量描写二十四节气的诗词歌赋；在民俗活动中，不同的节气有各自独特的习俗，如清明扫墓、端午竞渡、中秋赏月等。此外，二十四节气还传播到了周边国家和地区，对这些地方的农业生产和文化发展产生了一定的影响。</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>
+    <p>☀️二十四节气是中国古代人民智慧的结晶，它承载着丰富的历史文化内涵，对中国乃至世界的农业生产和文化发展都产生了深远的影响☀️</p>
+  </footer>
+</body>
+
+</html>

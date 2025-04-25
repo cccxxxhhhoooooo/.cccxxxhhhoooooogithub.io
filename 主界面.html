@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二十四节气</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+          #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -2;
+            filter: brightness(1);
+            transition: opacity 0.8s ease;
+        }
+        #default-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                    rgba(240, 247, 244, 0.05),
+                    rgba(225, 236, 231, 0.03)
+                );
+            z-index: -1;
+            pointer-events: none;
+            }
+        #season-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;        
+        image-rendering: -webkit-optimize-contrast; 
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        z-index: -1;
+        pointer-events: none;
+        background-blend-mode: overlay;
+        
+}
+        #solarterm-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;        
+            image-rendering: -webkit-optimize-contrast; 
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .season-mark {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+       :root {
+            --primary-color: #91b3d8;
+            --secondary-color: #4a7860;
+            --accent-gold: #d8c7b8;
+            --accent-light: #f8f4ee;
+            --text-dark: #2b2d42;
+            --text-light: #f8f9fa;
+            --spring: #a8d8b9;  /* 柳叶绿 */
+            --summer: #f8c3cd;  /* 荷花粉 */
+            --autumn: #e6b422;  /* 秋香黄 */
+            --winter: #c4d7e6;  /* 雪青色 */
+            --bg-gradient-start: #f0f7f4;
+            --bg-gradient-end: #e1ece7;
+            --glow-effect: 0 0 15px rgba(209, 41, 41, 0.6);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            font-family: 'Noto Serif SC', serif;
+            perspective: 1000px;
+            color: var(--text-dark);
+            overflow: hidden;
+        
+        }
+
+        .container {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle-border {
+            position: absolute;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: 
+                linear-gradient(var(--accent-light), var(--accent-light)) padding-box,
+                conic-gradient(
+                    from 0deg,
+                    var(--spring) 0deg 90deg,
+                    var(--summer) 90deg 180deg,
+                    var(--autumn) 180deg 270deg,
+                    var(--winter) 270deg 360deg
+                ) border-box;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+            z-index: 1;
+            animation: rotateBorder 30s linear infinite, pulseBorder 8s ease infinite;
+
+        }
+
+        @keyframes pulseBorder {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}   
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .circle {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 30%, #f8f9fa, #e9ecef);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.1),
+                inset 0 -10px 30px rgba(0, 0, 0, 0.05);
+            border: 4px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 2;
+            padding: 30px;
+            
+        }
+
+        .circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .circle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d8c7b8" fill-opacity="0.05" d="M50 0c13.8 0 26.3 5.6 35.4 14.6S100 36.2 100 50s-5.6 26.3-14.6 35.4S63.8 100 50 100s-26.3-5.6-35.4-14.6S0 63.8 0 50s5.6-26.3 14.6-35.4S36.2 0 50 0z"/></svg>');
+            background-size: 25px 25px;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .title {
+            background: linear-gradient(50deg, 
+                #a9eca2 20%,
+                #dbead4 50%,
+                #ace9d8 80%);
+                -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 95px;
+            font-weight: 500;
+            letter-spacing: 8px;
+            font-family: 'Ma Shan Zheng', cursive;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 5;
+            transition: all 0.6s ease;
+            padding: 0 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            text-decoration: none; 
+        }
+        @keyframes rippleEffect {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+            .title.clicked::after {
+                width: 100% !important;
+                background: linear-gradient(90deg, 
+                    transparent 10%,
+                    rgba(225, 80, 8, 0.8) 50%,
+                    transparent 90%
+                );
+                transition: width 0.4s ease-out;
+    }
+        .date-display {
+            font-size: 25px;
+            color: var(--secondary-color);
+            font-weight: 500;
+            height: 28px;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            font-family: 'Noto Serif SC', serif;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+            transparent, 
+            #81b29a 40%,  /* 春色 */
+            #f2cc8f 60%,  /* 夏色 */
+            transparent);
+            transition: width 0.4s ease-out;
+        }
+
+
+        /* 节气名称环形布局 */
+        .solar-terms {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .term {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-family: 'Noto Serif SC', serif;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: center;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+            z-index: 4;
+        }
+
+        .term:hover {
+            color: var(--primary-color);
+            transform: scale(1.3);
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .term.active {
+            color: var(--accent-gold);
+            font-weight: 700;
+            transform: scale(1.4);
+            text-shadow: 0 0 10px rgba(216, 199, 184, 0.5);
+        }
+
+        /* 季节标记 */
+        .season-mark {
+            position: absolute;
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--text-light);
+            width: 70px;
+            height: 70px;
+            border-radius: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            font-family: 'Ma Shan Zheng', cursive;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(2px);
+            border: 2px solid rgba(255,255,255,0.2);
+            font-size: 42px;
+            width: 80px;
+            height: 80px;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.2),
+                inset 0 4px 8px rgba(255,255,255,0.3),
+                inset 0 -4px 8px rgba(0,0,0,0.2);
+            text-shadow: 
+                1px 1px 2px rgba(0,0,0,0.3),
+                0 0 10px rgba(255,255,255,0.5);
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 2px solid rgba(255,255,255,0.4);
+}
+        
+
+            .season-mark:hover {
+                transform: scale(1.2) rotate(10deg);
+                box-shadow: 
+                    0 12px 30px rgba(0,0,0,0.3),
+                    inset 0 6px 12px rgba(255,255,255,0.4),
+                    inset 0 -6px 12px rgba(0,0,0,0.3);
+            }
+
+        .spring { background: rgba(129, 177, 132, 0.8); }
+        .summer { background: rgba(217, 180, 143, 0.8); }
+        .autumn { background: rgba(192, 139, 115, 0.8); }
+        .winter { background: rgba(138, 180, 201, 0.8); }
+
+        /* 悬停效果 */
+        .circle:hover {
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.15),
+                inset 0 -15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .circle:hover::before {
+            opacity: 1;
+        }
+
+        .title:hover {
+            color: var(--primary-color);
+            letter-spacing: 10px;
+            text-shadow: 
+                3px 3px 8px rgba(0, 0, 0, 0.1),
+                0 0 15px rgba(216, 199, 184, 0.3);
+        }
+
+        .title:hover::after {
+            width: 100%;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 3;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+            transition: all 0.6s ease;
+        }
+
+
+        .bg-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-leaf {
+            position: absolute;
+            opacity: 0.1;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 750px) {
+            .container {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1/1;
+                padding: 20px;
+            }
+            .circle-border {
+                width: calc(100% - 30px);
+                height: calc(100% - 30px);
+            }
+            .circle {
+                width: 100px;
+                height: 220px;
+            }
+            .title {
+                font-size: 36px;
+                letter-spacing: 6px;
+            }
+            .date-display {
+                font-size: 18px;
+            }
+            .term {
+                width: 60px;
+                height: 60px;
+                font-size: 16px;
+            }
+            .season-mark {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+        }
+        #season-bg::before, #solarterm-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+       
+    </style>
+</head>
+<body>
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="images/背景视频.mp4" type="video/mp4">
+        <source src="images/背景视频.webm" type="video/webm">
+    </video>
+    <div id="default-bg"></div>  
+    <div id="season-bg"></div>
+    <div id="solarterm-bg"></div>
+
+
+    <div class="container">
+
+        <div class="bg-decoration" id="bgDecoration"></div>
+
+        <div class="circle-border"></div>
+        
+        <!-- 节气名称环形布局 -->
+        <div class="solar-terms" id="solarTerms"></div>
+        
+        <!-- 季节标记 -->
+<div class="season-mark spring" style="top: 12%; left: 50%; transform: translateX(-50%);">春</div>
+<div class="season-mark summer" style="top: 50%; right: 12%; transform: translateY(-50%);">夏</div>
+<div class="season-mark autumn" style="bottom: 12%; left: 50%; transform: translateX(-50%);">秋</div>
+<div class="season-mark winter" style="top: 50%; left: 12%; transform: translateY(-50%);">冬</div>
+        
+        <!-- 主圆形 -->
+        <div class="circle">
+            <a href="历史渊源.html" class="title" id="mainTitle">二十四节气</a>
+            <div class="date-display" id="dateDisplay"></div>
+            <div class="particles" id="particles"></div>
+        </div>
+    </div>
+
+    <script>
+         
+        // 二十四节气数据
+        const solarTerms = [
+            { name: "立春", date: "2月3-5日",background:'images/立春.jpg' },
+            { name: "雨水", date: "2月18-20日",background:'images/雨水.jpg'},
+            { name: "惊蛰", date: "3月5-7日",background:'images/惊蛰.jpg'},
+            { name: "春分", date: "3月20-22日",background:'images/春分.jpg'},
+            { name: "清明", date: "4月4-6日" ,background:'images/清明.jpeg'},
+            { name: "谷雨", date: "4月19-21日",background:'images/谷雨.jpg' },
+            { name: "立夏", date: "5月5-7日",background:'images/立夏.jpg' },
+            { name: "小满", date: "5月20-22日" ,background:'images/小满.jpg'},
+            { name: "芒种", date: "6月5-7日",background:'images/芒种.jpg' },
+            { name: "夏至", date: "6月21-22日" ,background:'images/夏至.jpg'},
+            { name: "小暑", date: "7月6-8日",background:'images/小暑.jpg' },
+            { name: "大暑", date: "7月22-24日" ,background:'images/大暑.jpg'},
+            { name: "立秋", date: "8月7-9日",background:'images/立秋.jpg' },
+            { name: "处暑", date: "8月22-24日" ,background:'images/处暑.jpg'},
+            { name: "白露", date: "9月7-9日",background:'images/白露.jpg'},
+            { name: "秋分", date: "9月22-24日" ,background:'images/秋分.jpg'},
+            { name: "寒露", date: "10月8-9日",background:'images/寒露.jpg' },
+            { name: "霜降", date: "10月23-24日" ,background:'images/霜降.jpg'},
+            { name: "立冬", date: "11月7-8日",background:'images/立冬.jpeg' },
+            { name: "小雪", date: "11月22-23日",background:'images/小雪.jpg' },
+            { name: "大雪", date: "12月6-8日" ,background:'images/大雪.jpg'},
+            { name: "冬至", date: "12月21-23日" ,background:'images/冬至.jpg'},
+            { name: "小寒", date: "1月5-7日",background:'images/小寒.jpg'},
+            { name: "大寒", date: "1月20-21日" ,background:'images/大寒.jpg'}
+        ];
+        
+        // 创建节气名称环形布局
+        const container = document.querySelector('.container');
+        const solarTermsContainer = document.getElementById('solarTerms');
+        const dateDisplay = document.getElementById('dateDisplay');
+        const bgDecoration = document.getElementById('bgDecoration');
+        const mainTitle = document.getElementById('mainTitle');
+        const radius = 300;
+        const centerX = container.offsetWidth / 2;
+        const centerY = container.offsetHeight / 2;
+        
+        // 创建背景装饰元素
+        function createBgDecoration() {
+            const seasons = ['spring', 'summer', 'autumn', 'winter'];
+            const colors = ['#7da184', '#d9b48f', '#c08b73', '#8ab4c9'];
+            
+            for (let i = 0; i < 12; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'bg-leaf';
+                
+                const size = Math.random() * 100 + 50;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const rotation = Math.random() * 360;
+                const opacity = Math.random() * 0.1 + 0.05;
+                const seasonIndex = Math.floor(Math.random() * 4);
+                const animationDuration = Math.random() * 30 + 20;
+                
+                leaf.style.width = `${size}px`;
+                leaf.style.height = `${size}px`;
+                leaf.style.left = `${posX}%`;
+                leaf.style.top = `${posY}%`;
+                leaf.style.transform = `rotate(${rotation}deg)`;
+                leaf.style.opacity = opacity;
+                leaf.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="${colors[seasonIndex]}" d="M50 0c13.8 0 26.3 5.6 35.4 14.6S100 36.2 100 50s-5.6 26.3-14.6 35.4S63.8 100 50 100s-26.3-5.6-35.4-14.6S0 63.8 0 50s5.6-26.3 14.6-35.4S36.2 0 50 0z"/></svg>')`;
+                leaf.style.animation = `floatLeaf ${animationDuration}s linear infinite`;
+                
+                bgDecoration.appendChild(leaf);
+            }
+        }
+        
+        // 创建节气点
+        solarTerms.forEach((term, index) => {
+            const angle = (index * (360 / 24) - 90) * (Math.PI / 180);
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            const termElement = document.createElement('div');
+            termElement.className = 'term';
+            termElement.textContent = term.name;
+            termElement.dataset.date = term.date;
+            termElement.style.left = `${x - 37.5}px`;
+            termElement.style.top = `${y - 37.5}px`;
+            
+
+            const rotationAngle = (index * (360 / 24)) % 360;
+            if (rotationAngle > 90 && rotationAngle < 270) {
+                termElement.style.transform = `rotate(${rotationAngle + 180}deg)`;
+                termElement.style.textAlign = 'end';
+            } else {
+                termElement.style.transform = `rotate(${rotationAngle}deg)`;
+            }
+            
+            // 根据季节设置不同颜色
+            if (index < 6) {
+                termElement.style.color = '#2a4e3a'; // 春
+            } else if (index < 12) {
+                termElement.style.color = '#5d5348'; // 夏
+            } else if (index < 18) {
+                termElement.style.color = '#6b4c3d'; // 秋
+            } else {
+                termElement.style.color = '#3a5e6d'; // 冬
+            }
+            
+            termElement.addEventListener('mouseover', function(e) {
+                e.stopPropagation();
+                // 显示节气背景
+                changeSolarTermBackground(term.background);
+                // 显示日期
+                dateDisplay.textContent = `时间：${this.dataset.date}`;
+                dateDisplay.style.opacity = '1';
+    });
+
+            termElement.addEventListener('mouseout', function() {
+                dateDisplay.style.opacity = '0';
+                // 隐藏节气背景
+                resetBackground();
+                
+    });
+            
+            solarTermsContainer.appendChild(termElement);
+        });
+        
+       
+
+        createBgDecoration();
+        const seasonBackgrounds = {
+        spring: 'images/spring.jpg',
+        summer: 'images/summer.jpg',
+        autumn: 'images/autumn.jpg',
+        winter: 'images/winter.jpg'
+    };
+    const seasonBg = document.getElementById('season-bg');
+
+        document.querySelectorAll('.season-mark').forEach(season => {
+            season.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const seasonType = this.classList[1];
+        changeBackground(seasonType);
+    });
+        });
+
+        document.addEventListener('click', () => {
+            resetBackground();
+        });
+
+     function changeBackground(season) {
+        const seasonBg = document.getElementById('season-bg');
+    const bgVideo = document.getElementById('bg-video');
+    
+    seasonBg.style.backgroundImage = `url(${seasonBackgrounds[season]})`;
+    seasonBg.style.opacity = '0.9';
+
+    bgVideo.style.opacity = '0';
+    
+    
+        }
+
+        function preloadImages() {
+            solarTerms.forEach(term => {
+        const img = new Image();
+        img.src = term.background;
+    });
+        }
+        preloadImages();
+
+        function changeSolarTermBackground(bgUrl) {
+            const solarbg = document.getElementById('solarterm-bg');
+    const bgVideo = document.getElementById('bg-video');
+    
+    solarbg.style.backgroundImage = `url(${bgUrl})`;
+    solarbg.style.opacity = '0.9';
+    bgVideo.style.opacity = '0';
+        }
+
+function resetBackground() {
+    const seasonBg = document.getElementById('season-bg');
+    const solarbg = document.getElementById('solarterm-bg');
+    const bgVideo = document.getElementById('bg-video');
+    
+    seasonBg.style.opacity = '0';
+    solarbg.style.opacity = '0';
+    bgVideo.style.opacity = '1';
+}
+
+function preloadImages() {
+
+    Object.values(seasonBackgrounds).forEach(url => {
+        new Image().src = url;
+    });
+    
+
+    solarTerms.forEach(term => {
+        new Image().src = term.background;
+    });
+}
+function createBgParticles() {
+            const bgContainer = document.getElementById('default-bg');
+            const particleCount = 15;
+
+            for(let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'bg-particle';
+                
+
+                const size = Math.random() * 120 + 80;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 10 + 20;
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${left}%;
+                    animation-delay: -${delay}s;
+                    animation-duration: ${duration}s;
+                    filter: blur(${Math.random()*8}px);
+                `;
+                
+                bgContainer.appendChild(particle);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createBgParticles();
+        });
+    </script>
+
+    <style>
+       
+    </style>
+</body>
+</html>

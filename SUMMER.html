@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夏季习俗诗歌谚语</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "宋体", serif; 
+            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .container {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            height: 200px;
+            background: linear-gradient(
+                to bottom, 
+                rgba(255, 153, 102, 0.8),  /* 顶部颜色 */
+                rgba(217, 180, 143, 0.4)  /* 底部颜色 */
+            );
+            display: flex;
+            flex-direction: column; /* 改为垂直排列 */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px 0; /* 内边距 */
+        }
+        
+        .content {
+            height: 800px;
+            background-image: url('images/背景2.jpg'); /* 替换为你的图片路径 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10px 40px 40px; /* 上边距10px，左右40px，下边距40px */
+            color: #fff;
+            overflow-y: auto;
+            /* 内部滚动 */
+            overflow-y: auto; /* 允许内部滚动 */
+            max-height: 800px; /* 限制最大高度 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+        
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar {
+            width: 0;  /* 隐藏垂直滚动条 */
+            height: 0; /* 隐藏水平滚动条 */
+        }
+
+        h1 {
+            font-family: "SimSun", "宋体", serif; 
+            font-size: 5em;
+            color: #fff5e6;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleAnimation 1.5s ease-in-out;
+            margin-top: 8px;
+            margin-bottom: 0px;
+        }
+
+        .xia-terms {
+            display: flex;
+            justify-content: space-around; /* 均匀分布 */
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 6px 6px;
+            width: 60%; 
+            border-radius: 8px;
+            margin-top: 4px;
+        }
+        
+        .xia-terms p {
+            margin: 0;
+            padding: 5px 5px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            cursor: pointer; /* 鼠标指针变为手型 */
+            transition: all 0.3s ease; /* 平滑过渡效果 */
+            position: relative;
+        }
+
+        /* 鼠标悬停特效 */
+        .xia-terms p:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+            color: #fff5e6; /* 颜色变亮 */
+        }
+        
+        /* 点击后的反馈效果 */
+        .xia-terms p:active {
+            transform: translateY(1px); /* 按下效果 */
+        }
+        
+        /* 添加下划线指示 */
+        .xia-terms p::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .xia-terms p:hover::after {
+            transform: scaleX(1); /* 悬停时显示下划线 */
+        }
+
+        /* 新增六个节气容器的样式 */
+        .season-container {
+            height: 600px;
+            margin-bottom: 20px; /* 容器之间的间距 */
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .season-container:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+        }
+
+        @keyframes titleAnimation {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 为第一个节气容器添加额外上边距 */
+        .season-container:first-child {
+            margin-top: 10px;
+        }
+        
+        /* 立夏容器特殊样式 */
+        #lixia {
+            background-color: rgba(255, 210, 150, 0.1);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .lixia-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .lixia-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .lixia-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+        
+        .lixia-content h3,
+        .xiaoman-content h3,
+        .mangzhong-content h3,
+        .xiazhi-content h3,
+        .xiaoshu-content h3,
+        .dashu-content h3 {
+            color: #805a30;
+            border-bottom: 2px solid #d6ac20;
+            padding-bottom: 3px;
+            margin-top: 0;
+            margin: 12px 0; 
+        }
+        
+        .lixia-content p,
+        .xiaoman-content p,
+        .mangzhong-content p,
+        .xiazhi-content p,
+        .xiaoshu-content p,
+        .dashu-content p{
+            margin: 8px 0;
+            line-height: 1.3;
+        }
+        
+        .poem {
+            font-style: italic;
+            color: #555;
+            padding-left: 20px;
+            border-left: 3px solid #d6ac20;
+        }
+
+        .poem p {
+            margin: 6px 0;
+            line-height: 1.3;
+        }
+        
+        .poem-line {
+            /* 诗句样式 - 左对齐 */
+            text-align: left;
+        }
+        
+        .poem-author {
+            /* 作者信息样式 - 右对齐 */
+            text-align: right;
+            padding-right: 20px;
+            font-style: normal;
+            color: #666;
+        }
+        
+        .proverb {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .proverb p {
+            line-height: 1.3;
+            margin: 6px 0;
+        }
+        /* 小满容器特殊样式 */
+        #xiaoman {
+            background-color: rgba(255, 180, 120, 0.2);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .xiaoman-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .xiaoman-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .xiaoman-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 芒种容器特殊样式 */
+        #mangzhong {
+            background-color: rgba(255, 150, 90, 0.23);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .mangzhong-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .mangzhong-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mangzhong-content {
+            width: 70%;
+            height: 100%;
+            padding: 0 20px;
+            overflow-y: auto;
+        }
+
+        /* 夏至容器特殊样式 */
+        #xiazhi {
+            background-color: rgba(252, 127, 73, 0.22);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .xiazhi-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .xiazhi-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .xiazhi-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 小暑容器特殊样式 */
+        #xiaoshu {
+            background-color: rgba(255, 90, 30, 0.22);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .xiaoshu-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .xiaoshu-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .xiaoshu-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+
+        /* 大暑容器特殊样式 */
+        #dashu {
+            background-color: rgba(255, 60, 0, 0.23);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .dashu-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .dashu-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dashu-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 节气内容区域样式修改 */
+        .lixia-content,
+        .xiaoman-content,
+        .mangzhong-content,
+        .xiazhi-content,
+        .xiaoshu-content,
+        .dashu-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 新增关键属性 */
+        }
+
+        .icon {
+            font-size: 1.4em;
+            text-decoration: none !important; /* 新增 */
+            border: none !important; /* 防止边框干扰 */
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: rgb(236, 163, 17);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            /* 统一箭头样式 */
+            .top-left-link .icon,
+            .top-right-link .icon {
+                font-size: 1.4em;
+                transition: transform 0.3s ease;
+            }
+
+            /* 悬停动画效果 */
+            .top-left-link:hover .icon {
+                transform: translateX(-5px);
+            }
+
+            .top-right-link:hover .icon {
+                transform: translateX(5px);
+            }
+
+            /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+
+            /* 移动端适配 */
+            @media (max-width: 768px) {
+                .top-left-link,
+                .top-right-link {
+                    padding: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    backdrop-filter: blur(3px);
+                }
+                .top-left-link { left: 10px; }
+                .top-right-link { right: 10px; }
+                .icon { font-size: 1.2em; }
+            }
+    </style>
+</head>
+<body>
+    <a href="SPRING.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="AUTUNM.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <div class="container header">
+        <!-- 头部内容 -->
+        <h1>夏</h1>
+        <div class="xia-terms">
+            <p onclick="scrollToTerm('lixia')">立夏</p>
+            <p onclick="scrollToTerm('xiaoman')">小满</p>
+            <p onclick="scrollToTerm('mangzhong')">芒种</p>
+            <p onclick="scrollToTerm('xiazhi')">夏至</p>
+            <p onclick="scrollToTerm('xiaoshu')">小暑</p>
+            <p onclick="scrollToTerm('dashu')">大暑</p>
+        </div>
+    </div>
+    
+    <div class="container content">
+        <!-- 主要内容区域 -->
+        <div class="season-container" id="lixia">
+            <div class="lixia-image">
+                <img src="images/立夏.png" alt="立夏">
+            </div>
+            <div class="lixia-content">
+                <h3>立夏 - 夏季的开始</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>迎夏仪式</strong>：古代帝王迎夏，民间有"祭夏神"习俗。</p>
+                <p><strong>尝新活动</strong>：苏州"立夏见三新"（樱桃、青梅、麦子），无锡"尝三鲜"（地、树、水三鲜）。</p>
+                <p><strong>吃立夏蛋</strong>：寓意拄心，预防"疰夏"。</p>
+                <p><strong>喝立夏茶</strong>：江西一带习俗，谓不饮立夏茶"一夏苦难熬"。</p>
+                <p><strong>斗蛋游戏</strong>：孩童持熟鸡蛋碰撞，破者认输。</p>
+                <p><strong>立夏秤人</strong>：吃罢中饭称体重，祈求夏日健康。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"晨起披衣出草堂，轩窗已自喜微凉。"</p>
+                    <p class="poem-author">——陆游《立夏前二日作》</p>
+                    <p class="poem-line">"梅子留酸软齿牙，芭蕉分绿与窗纱。"</p>
+                    <p class="poem-author">——杨万里《闲居初夏午睡起》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："立夏小满，河满缸满""立夏东风到，麦子水里涝"。</p>
+                    <p><strong>气候预测</strong>："立夏晴，雨淋淋""立夏北风当日雨"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="xiaoman">
+            <div class="xiaoman-image">
+                <img src="images/小满.png" alt="小满">
+            </div>
+            <div class="xiaoman-content">
+                <h3>小满 - 麦类等夏熟作物籽粒开始饱满</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭车神</strong>：南方地区祭祀水车车神，祈求水源涌旺。</p>
+                <p><strong>祭蚕神</strong>：江浙一带举行祈蚕节，祈求蚕宝宝健康成长。</p>
+                <p><strong>尝苦菜</strong>：民间有吃苦菜的习俗，清热去火，寓意健康。</p>
+                <p><strong>抢水活动</strong>：浙江海宁一带举行抢水仪式，引水灌溉农田。</p>
+                <p><strong>看麦梢黄</strong>：关中地区出嫁女儿回娘家，询问夏收准备。</p>
+                <p><strong>夏忙会</strong>：部分地区举办集市，交流生产工具，为夏收做准备。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"小满气全时，如何靡草衰。田家私黍稷，方伯问蚕丝。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·小满四月中》</p>
+                    <p class="poem-line">"夜莺啼绿柳，皓月醒长空。最爱垄头麦，迎风笑落红。"</p>
+                    <p class="poem-author">——欧阳修《小满》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："小满不满，芒种莫管""小满见三新"。</p>
+                    <p><strong>气候预测</strong>："小满大风，树头要空""小满十日满地黄"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="mangzhong">
+            <div class="mangzhong-image">
+                <img src="images/芒种.png" alt="芒种">
+            </div>
+            <div class="mangzhong-content">
+                <h3>芒种 - 有芒作物成熟</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>送花神</strong>：民间在芒种日举行祭祀花神的仪式，表达对花神的感激之情。</p>
+                <p><strong>安苗</strong>：皖南地区举行安苗祭祀活动，祈求五谷丰登、村民平安。</p>
+                <p><strong>煮梅</strong>：南方地区在芒种时节有煮梅的习俗，以去除梅子的酸涩味道。</p>
+                <p><strong>其他习俗</strong>：贵州东南部侗族青年举办打泥巴仗节，寓意丰收与欢乐。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"芒种看今日，螳螂应节生。彤云高下影，鴳鸟往来声。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·芒种五月节》</p>
+                    <p class="poem-line">"时雨及芒种，四野皆插秧。家家麦饭美，处处菱歌长。"</p>
+                    <p class="poem-author">——陆游《时雨》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："芒种不种，再种无用""芒种夏至麦类黄，快打快收快入仓"。</p>
+                    <p><strong>气候预测</strong>："芒种落雨，端午涨水""芒种夏至是水节，如若无雨是旱天"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="xiazhi">
+            <div class="xiazhi-image">
+                <img src="images/夏至.png" alt="夏至">
+            </div>
+            <div class="xiazhi-content">
+                <h3>夏至 - 白天最长的一天</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭神祀祖</strong>：民间在夏至日祭祀祖先，祈求丰收和安康。</p>
+                <p><strong>祭地仪式</strong>：古代皇帝在夏至日举行盛大的祭地仪式。</p>
+                <p><strong>吃夏至面</strong>："冬至饺子夏至面"，夏至吃面寓意吉祥和健康。</p>
+                <p><strong>吃馄饨</strong>：古代有早晨吃麦粥、中午吃馄饨的习俗。</p>
+                <p><strong>其他习俗</strong>：湖南地区吃夏至蛋、喝绿豆粥等，清热解暑。</p>
+                <p><strong>放荷灯</strong>：夏至夜晚，人们放荷灯，表达对逝去亲人的怀念和对活着人们的祝福。</p>
+                <p><strong>观莲花</strong>：夏至是观赏莲花的最佳时节，民间有"观莲"习俗。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"处处闻蝉响，须知五月中。龙潜渌水穴，火助太阳宫。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·夏至五月中》</p>
+                    <p class="poem-line">"昼晷已云极，宵漏自此长。未及施政教，所忧变炎凉。"</p>
+                    <p class="poem-author">——韦应物《夏至避暑北池》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："夏至不种，再种无用""夏至三庚数头伏"。</p>
+                    <p><strong>气候预测</strong>："夏至雨点值千金""夏至不过不热"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="xiaoshu">
+            <div class="xiaoshu-image">
+                <img src="images/小暑.png" alt="小暑">
+            </div>
+            <div class="xiaoshu-content">
+                <h3>小暑 - 天气开始炎热</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>晒伏</strong>：把存放在箱柜里的衣服晾到阳光下暴晒，去潮湿，防霉虫。</p>
+                <p><strong>头伏饺子</strong>：人们在伏日往往食欲不振，饺子可开胃解馋。</p>
+                <p><strong>吃黄鳝</strong>：小暑时节黄鳝味美滋补，有益祛疾，有"小暑黄鳝赛人参"之说。</p>
+                <p><strong>吃莲藕</strong>：莲藕清热养血除烦，适合夏天食用。</p>
+                <p><strong>游伏</strong>：小暑开始"入伏"，人们扶老携幼出门游玩，寓意"游福"。</p>
+                <p><strong>六月六晒红绿</strong>：农历六月初六，民间有晒书画、衣物的习俗。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"倏忽温风至，因循小暑来。竹喧先觉雨，山暗已闻雷。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·小暑六月节》</p>
+                    <p class="poem-line">"申祷山川便作霖，耘苗时候想田深。且欣小暑能如此，更愿新秋得似今。"</p>
+                    <p class="poem-author">——韩淲《十八日小暑大雨》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："小暑过，一日热三分""小暑一声雷，倒转做黄梅"。</p>
+                    <p><strong>农事指导</strong>："谷是泥里秀穗，麦是火里生金""伏里无雨，囤里无米"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="dashu">
+            <div class="dashu-image">
+                <img src="images/大暑.png" alt="大暑">
+            </div>
+            <div class="dashu-content">
+                <h3>大暑 - 一年中最热的时期</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>送大暑船</strong>：浙江沿海地区将载有祭品的船点燃放入海中，祈求五谷丰登。</p>
+                <p><strong>伏茶</strong>：由金银花、夏枯草等中草药煮成，具有清凉祛暑的作用。</p>
+                <p><strong>吃荔枝羊肉</strong>：寓意消暑滋补、增强体质。</p>
+                <p><strong>烧伏香</strong>：百姓们烧香祈福，祈求风调雨顺、百谷丰登。</p>
+                <p><strong>斗蟋蟀</strong>：乡村田野蟋蟀众多，人们茶余饭后常斗蟋蟀取乐。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"大暑三秋近，林钟九夏移。桂轮开子夜，萤火照空时。"</p>
+                    <p class="poem-author">——元稹《大暑六月中》</p>
+                    <p class="poem-line">"赤日几时过，清风无处寻。经书聊枕籍，瓜李漫浮沉。"</p>
+                    <p class="poem-author">——曾几《大暑》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："小暑雨如银，大暑雨如金""伏里多雨，囤里多米"。</p>
+                    <p><strong>农事指导</strong>："大暑不浇苗，到老无好稻""玉米掐脖旱，产量减一半"。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        // 平滑滚动到对应节气
+        function scrollToTerm(termId) {
+            const element = document.getElementById(termId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth', // 平滑滚动
+                    block: 'start'      // 对齐到顶部
+                });
+                
+                // 添加临时高亮效果
+                element.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)';
+                setTimeout(() => {
+                    element.style.boxShadow = 'none';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能知识问答系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #91d3b8;
+            --secondary-color: #7878e7;
+            --success-color: #4cc9f0;  /* 亮蓝色 */
+            --error-color: #f72585;    /* 亮粉色 */
+            --warning-color: #f8961e;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "SimSun", "宋体", serif; 
+            background: url('images/背景2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 900px;
+            padding: 40px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            border-radius: 3px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .progress-container {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            width: 0%;
+            transition: var(--transition);
+            border-radius: 5px;
+        }
+        
+        .timer {
+            background-color: var(--light-color);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark-color);
+        }
+        
+        .timer i {
+            color: var(--primary-color);
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: var(--dark-color);
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option {
+            background-color: var(--light-color);
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .option.selected {
+            background-color: #e6f4d8;
+            color: rgb(118, 198, 247);
+            border-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .option-number {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background-color: var(--gray-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .score {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .result-container {
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .result-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .result-score {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--primary-color);
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .result-message {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .restart-btn {
+            background-color: var(--success-color);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        .restart-btn:hover {
+            background-color: #38b6db;
+        }
+        
+       
+        .explanation {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .explanation-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .hint-btn {
+            background-color: transparent;
+            color: #c9deef;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            border: 1px solid var(--primary-color);
+            box-shadow: none;
+            margin-top: 10px;
+        }
+        
+        .hint-btn:hover {
+            background-color:  #dff1e2;
+        }
+        
+        .hint {
+            background-color: #f0f8ff; 
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+            border-left: 4px solid #a4d1ec;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .hint-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--success-color);
+        }
+        
+        .category-tag {
+            display: inline-block;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .question {
+                font-size: 1.2rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 新增关键属性 */
+        }
+
+        .icon {
+            font-size: 1.4em;
+            text-decoration: none !important; /* 新增 */
+            border: none !important; /* 防止边框干扰 */
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: rgb(236, 163, 17);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            /* 统一箭头样式 */
+            .top-left-link .icon,
+            .top-right-link .icon {
+                font-size: 1.4em;
+                transition: transform 0.3s ease;
+            }
+
+            /* 悬停动画效果 */
+            .top-left-link:hover .icon {
+                transform: translateX(-5px);
+            }
+
+            .top-right-link:hover .icon {
+                transform: translateX(5px);
+            }
+
+            /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+
+            /* 移动端适配 */
+            @media (max-width: 768px) {
+                .top-left-link,
+                .top-right-link {
+                    padding: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    backdrop-filter: blur(3px);
+                }
+                .top-left-link { left: 10px; }
+                .top-right-link { right: 10px; }
+                .icon { font-size: 1.2em; }
+            }
+    </style>
+</head>
+<body>
+    <a href="WINTER.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="尾页.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <div class="container">
+        <h1><i class="fas fa-brain"></i> 节气智能知识问答挑战 </h1>
+        
+        <div class="header">
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>进度</span>
+                    <span id="progress-text">问题 1/10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="timer">
+                <i class="fas fa-clock"></i>
+                <span id="time">00:00</span>
+            </div>
+        </div>
+        
+        <div class="category-tag" id="category-tag">通用知识</div>
+        
+        <div class="question-container" id="question-container">
+            <div class="question" id="question">加载问题中...</div>
+            <div class="options" id="options"></div>
+            
+            <button class="hint-btn" id="hint-btn">
+                <i class="fas fa-lightbulb"></i> 显示提示
+            </button>
+            
+            <div class="hint" id="hint">
+                <div class="hint-title"><i class="fas fa-lightbulb"></i> 提示</div>
+                <div id="hint-text"></div>
+            </div>
+            
+            <div class="explanation" id="explanation">
+                <div class="explanation-title"><i class="fas fa-info-circle"></i> 解析</div>
+                <div id="explanation-text"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="prev-btn" disabled>
+                <i class="fas fa-arrow-left"></i> 上一题
+            </button>
+            <button id="next-btn">
+                下一题 <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <div class="score-container">
+            <span>当前得分:</span>
+            <span class="score" id="score">0</span>/10
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <div class="result-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="result-title">测试完成!</h2>
+            <div class="result-score">
+                <span id="final-score">0</span>/10
+            </div>
+            <p class="result-message" id="result-message"></p>
+            <div class="timer">
+                <i class="fas fa-clock"></i>
+                <span id="final-time">00:00</span>
+            </div>
+            <button class="restart-btn" id="restart-btn">
+                <i class="fas fa-redo"></i> 重新开始
+            </button>
+            
+        </div>
+    </div>
+
+    <!-- 添加音效元素 -->
+    <audio id="correctSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="completeSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+
+    <script>
+        // 增强题库
+        const questions = [
+    {
+        question: "🌱 二十四节气中，表示春季开始的节气是？",
+        options: ["🌿立春", "💧雨水", "⚡惊蛰", "🌸春分"],
+        answer: 0,
+        category: "二十四节气",
+        hint: "这个节气名称中有'春'字",
+        explanation: "立春是二十四节气之首，表示春季的开始，通常在每年2月3-5日。"
+    },
+    {
+        question: "⚖️ 下列哪个节气标志着昼夜平分？",
+        options: ["🌞立夏", "☀️夏至", "🍂秋分", "❄️冬至"],
+        answer: 2,
+        category: "二十四节气",
+        hint: "这个节气名称中有'分'字",
+        explanation: "春分和秋分都是昼夜平分的节气，选项中只有秋分。"
+    },
+    {
+        question: "🌧️ '清明时节雨纷纷'描写的是哪个节气？",
+        options: ["🌾谷雨", "🌫️清明", "🌤️立夏", "🌾小满"],
+        answer: 1,
+        category: "二十四节气",
+        hint: "诗句中直接提到了节气名称",
+        explanation: "清明是传统节日也是节气，通常在4月4-6日，正值春季多雨时节。"
+    },
+    {
+        question: "☀️ 二十四节气中，哪个节气是一年中白天最长的一天？",
+        options: ["🌞夏至", "🔥大暑", "🌿立夏", "🌡️小暑"],
+        answer: 0,
+        category: "二十四节气",
+        hint: "这个节气名称中有'至'字",
+        explanation: "夏至是北半球一年中白昼最长、黑夜最短的一天。"
+    },
+    {
+        question: "🌞 下列节气中，哪个不属于夏季？",
+        options: ["🌾芒种", "🌡️小暑", "🍂处暑", "🔥大暑"],
+        answer: 2,
+        category: "二十四节气",
+        hint: "这个节气名称中有'处'字",
+        explanation: "处暑是秋季的第二个节气，表示炎热天气即将结束。"
+    },
+    {
+        question: "❄️ 二十四节气中，'小雪'之后的下一个节气是？",
+        options: ["🌨️大雪", "🎄冬至", "🧊小寒", "❄️大寒"],
+        answer: 0,
+        category: "二十四节气",
+        hint: "与'小雪'对应的节气",
+        explanation: "二十四节气按顺序排列，'小雪'之后是'大雪'。"
+    },
+    {
+        question: "🌧️ '谷雨'节气的主要气候特点是？",
+        options: ["❄️开始下雪", "☔降雨增多", "🏜️天气干燥", "🌀台风频繁"],
+        answer: 1,
+        category: "二十四节气",
+        hint: "从节气名称可以联想到",
+        explanation: "谷雨时节降雨增多，有利于谷物生长，故称'谷雨'。"
+    },
+    {
+        question: "⛄ 下列哪组节气都是表示冬季的？",
+        options: ["❄️立冬、小雪、冬至", "🌨️大雪、小寒、立春", "🎄冬至、小寒、雨水", "🧊大寒、立春、惊蛰"],
+        answer: 0,
+        category: "二十四节气",
+        hint: "注意立春已经是春季的开始",
+        explanation: "立冬、小雪、大雪、冬至、小寒、大寒都是冬季的节气。"
+    },
+    {
+        question: "⚡ '惊蛰'节气的含义是？",
+        options: ["🐛春雷惊醒冬眠动物", "🌱开始播种谷物", "🍂天气转凉", "🌾收获季节开始"],
+        answer: 0,
+        category: "二十四节气",
+        hint: "从'惊'和'蛰'字可以联想",
+        explanation: "惊蛰表示春雷始鸣，惊醒蛰伏于地下冬眠的昆虫。"
+    },
+    {
+        question: "🥟 二十四节气中，哪个节气有吃饺子的习俗？",
+        options: ["🍲立冬", "🥟冬至", "🍜小寒", "🍡大寒"],
+        answer: 1,
+        category: "二十四节气",
+        hint: "北方有'冬至饺子夏至面'的谚语",
+        explanation: "冬至是中国传统节日，北方有吃饺子的习俗，南方则有吃汤圆的习俗。"
+    },
+];
+
+        // 变量初始化
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        let answered = false;
+        let startTime = null;
+        let timerInterval = null;
+        let timeElapsed = 0;
+
+        // DOM元素
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreElement = document.getElementById("score");
+        const progressTextElement = document.getElementById("progress-text");
+        const progressFillElement = document.getElementById("progress-fill");
+        const questionContainer = document.getElementById("question-container");
+        const resultContainer = document.getElementById("result-container");
+        const finalScoreElement = document.getElementById("final-score");
+        const restartBtn = document.getElementById("restart-btn");
+        const timeElement = document.getElementById("time");
+        const finalTimeElement = document.getElementById("final-time");
+        const hintBtn = document.getElementById("hint-btn");
+        const hintElement = document.getElementById("hint");
+        const hintTextElement = document.getElementById("hint-text");
+        const explanationElement = document.getElementById("explanation");
+        const explanationTextElement = document.getElementById("explanation-text");
+        const categoryTagElement = document.getElementById("category-tag");
+        const resultMessageElement = document.getElementById("result-message");
+
+        
+        // 音效元素
+        const correctSound = document.getElementById("correctSound");
+        const wrongSound = document.getElementById("wrongSound");
+        const completeSound = document.getElementById("completeSound");
+
+        // 格式化时间
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 更新计时器
+        function updateTimer() {
+            timeElapsed = Math.floor((Date.now() - startTime) / 1000);
+            timeElement.textContent = formatTime(timeElapsed);
+        }
+
+        // 开始计时器
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // 停止计时器
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        // 加载问题
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            questionElement.textContent = question.question;
+            
+            optionsElement.innerHTML = "";
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("option");
+                
+                const optionNumber = document.createElement("div");
+                optionNumber.classList.add("option-number");
+                optionNumber.textContent = index + 1;
+                
+                const optionText = document.createElement("div");
+                optionText.textContent = option;
+                
+                optionElement.appendChild(optionNumber);
+                optionElement.appendChild(optionText);
+                optionElement.addEventListener("click", () => selectOption(index));
+                optionsElement.appendChild(optionElement);
+            });
+            
+            progressTextElement.textContent = `问题 ${currentQuestion + 1}/${questions.length}`;
+            progressFillElement.style.width = `${(currentQuestion / questions.length) * 100}%`;
+            
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? "完成测试" : "下一题";
+            prevBtn.disabled = currentQuestion === 0;
+            
+            // 更新分类标签
+            categoryTagElement.textContent = question.category;
+            
+            // 重置提示和解析
+            hintElement.style.display = "none";
+            explanationElement.style.display = "none";
+            hintTextElement.textContent = question.hint;
+            explanationTextElement.textContent = question.explanation;
+            
+            answered = false;
+            selectedOption = null;
+        }
+
+        // 选择选项
+        function selectOption(index) {
+            if (answered) return;
+            
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => option.classList.remove("selected"));
+            options[index].classList.add("selected");
+            selectedOption = index;
+        }
+
+        // 检查答案
+        // 检查答案
+    function checkAnswer() {
+        if (selectedOption === null) return false;
+        
+        answered = true;
+        const options = document.querySelectorAll(".option");
+        const correctIndex = questions[currentQuestion].answer;
+
+        // 播放音效
+        if (selectedOption === correctIndex) {
+            correctSound.currentTime = 0; // 重置音频到开始
+            correctSound.play();
+        } else {
+            wrongSound.currentTime = 0; // 重置音频到开始
+            wrongSound.play();
+        }
+        
+        // 添加正确的动画类
+        options.forEach((option, index) => {
+            if (index === correctIndex) {
+                option.classList.add("correct");
+                // 强制应用最终状态
+                setTimeout(() => {
+                    option.style.backgroundColor = "var(--success-color)";
+                    option.style.color = "white";
+                }, 800);
+            } else if (index === selectedOption && index!== correctIndex) {
+                option.classList.add("incorrect");
+                console.log("已为错误选项添加 incorrect 类"); // 添加调试语句
+                // 强制应用最终状态
+                setTimeout(() => {
+                    option.style.backgroundColor = "var(--error-color)";
+                    option.style.color = "white";
+                }, 800);
+            }
+        });
+        
+        explanationElement.style.display = "block";
+        
+        if (selectedOption === correctIndex) {
+            score++;
+            scoreElement.textContent = score;
+        }
+        
+        return true;
+    }
+
+        // 下一题
+        nextBtn.addEventListener("click", () => {
+            if (!answered) {
+                if (!checkAnswer()) {
+                    alert("请选择一个答案!");
+                    return;
+                }
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        });
+
+        // 上一题
+        prevBtn.addEventListener("click", () => {
+            currentQuestion--;
+            loadQuestion();
+        });
+
+        // 显示提示
+        hintBtn.addEventListener("click", () => {
+            hintElement.style.display = hintElement.style.display === "block" ? "none" : "block";
+            hintBtn.innerHTML = hintElement.style.display === "block" 
+                ? '<i class="fas fa-lightbulb"></i> 隐藏提示' 
+                : '<i class="fas fa-lightbulb"></i> 显示提示';
+        });
+
+        // 显示结果
+        function showResult() {
+            stopTimer();
+            questionContainer.style.display = "none";
+            document.querySelector(".controls").style.display = "none";
+            document.querySelector(".score-container").style.display = "none";
+            resultContainer.style.display = "block";
+            
+            finalScoreElement.textContent = score;
+            finalTimeElement.textContent = formatTime(timeElapsed);
+            
+            // 播放完成音效
+            completeSound.currentTime = 0;
+            completeSound.play();
+            
+            // 根据得分显示不同的消息
+            let message = "";
+            if (score === questions.length) {
+                message = "太棒了！满分！你的知识面非常广，继续保持！";
+            } else if (score >= questions.length * 0.8) {
+                message = "做得很好！知识储备很丰富，只有少数问题需要复习。";
+            } else if (score >= questions.length * 0.6) {
+                message = "不错的成绩！你已经掌握了不少知识，但还有提升空间。";
+            } else if (score >= questions.length * 0.4) {
+                message = "再接再厉！你已经掌握了一些基础知识，建议多学习相关知识。";
+            } else {
+                message = "不要气馁！每个人都是从零开始的，多学习多积累，下次一定会更好！";
+            }
+            
+            resultMessageElement.textContent = message;
+        }
+
+        // 重新开始
+        restartBtn.addEventListener("click", () => {
+            currentQuestion = 0;
+            score = 0;
+            scoreElement.textContent = score;
+            questionContainer.style.display = "block";
+            document.querySelector(".controls").style.display = "flex";
+            document.querySelector(".score-container").style.display = "flex";
+            resultContainer.style.display = "none";
+            
+            // 重置计时器
+            stopTimer();
+            timeElapsed = 0;
+            timeElement.textContent = "00:00";
+            startTimer();
+            
+            loadQuestion();
+        });
+
+        
+
+        // 键盘导航
+        document.addEventListener("keydown", (e) => {
+            if (e.key >= "1" && e.key <= "4" && !answered) {
+                const index = parseInt(e.key) - 1;
+                if (index < questions[currentQuestion].options.length) {
+                    selectOption(index);
+                }
+            } else if (e.key === "Enter") {
+                nextBtn.click();
+            } else if (e.key === "ArrowLeft" && !prevBtn.disabled) {
+                prevBtn.click();
+            } else if (e.key === "ArrowRight") {
+                nextBtn.click();
+            }
+        });
+
+        // 初始化
+        loadQuestion();
+        startTimer();
+    </script>
+</body>
+</html>

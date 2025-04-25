@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>春季习俗诗歌谚语</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "宋体", serif; 
+            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .container {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            height: 200px;
+            background: linear-gradient(
+                to bottom, 
+                rgba(129, 177, 132, 0.8),  /* 顶部颜色 */
+                rgba(129, 177, 132, 0.4)   /* 底部颜色 */
+            );
+            display: flex;
+            flex-direction: column; /* 改为垂直排列 */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px 0; /* 内边距 */
+        }
+        
+        .content {
+            height: 800px;
+            background-image: url('images/背景2.jpg'); /* 替换为你的图片路径 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10px 40px 40px; /* 上边距10px，左右40px，下边距40px */
+            color: #fff;
+            overflow-y: auto;
+            /* 内部滚动 */
+            overflow-y: auto; /* 允许内部滚动 */
+            max-height: 800px; /* 限制最大高度 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+        
+
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar {
+            width: 0;  /* 隐藏垂直滚动条 */
+            height: 0; /* 隐藏水平滚动条 */
+        }
+
+        h1 {
+            font-family: "SimSun", "宋体", serif; 
+            font-size: 5em;
+            color: #e6f3f1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleAnimation 1.5s ease-in-out;
+            margin-top: 8px;
+            margin-bottom: 0px;
+        }
+
+        .chun-terms {
+            display: flex;
+            justify-content: space-around; /* 均匀分布 */
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 6px 6px;
+            width: 60%; 
+            border-radius: 8px;
+            margin-top: 4px;
+        }
+        
+        .chun-terms p {
+            margin: 0;
+            padding: 5px 5px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            cursor: pointer; /* 鼠标指针变为手型 */
+            transition: all 0.3s ease; /* 平滑过渡效果 */
+            position: relative;
+            font-family: "SimSun", "宋体", serif; 
+        }
+
+        /* 鼠标悬停特效 */
+        .chun-terms p:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+            color: #f0fff0; /* 颜色变亮 */
+        }
+        
+        /* 点击后的反馈效果 */
+        .chun-terms p:active {
+            transform: translateY(1px); /* 按下效果 */
+        }
+        
+        /* 添加下划线指示 */
+        .chun-terms p::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .chun-terms p:hover::after {
+            transform: scaleX(1); /* 悬停时显示下划线 */
+        }
+
+        /* 新增六个节气容器的样式 */
+        .season-container {
+            height: 600px;
+            margin-bottom: 20px; /* 容器之间的间距 */
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .season-container:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+        }
+
+        @keyframes titleAnimation {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 为第一个节气容器添加额外上边距 */
+        .season-container:first-child {
+            margin-top: 10px;
+        }
+        
+        /* 立春容器特殊样式 */
+        #lichun {
+            background-color:  rgba(129, 177, 132, 0.1);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .lichun-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .lichun-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .lichun-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+        
+        .lichun-content h3,
+        .yushui-content h3,
+        .jingzhe-content h3,
+        .chunfen-content h3,
+        .qingming-content h3,
+        .guyu-content h3 {
+            color: #2c5e2c;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 3px;
+            margin-top: 0;
+            margin: 12px 0; 
+        }
+        
+        .lichun-content p,
+        .yushui-content p,
+        .jingzhe-content p,
+        .chunfen-content p,
+        .qingming-content p,
+        .guyu-content p{
+            margin: 8px 0;
+            line-height: 1.3;
+        }
+        
+        .poem {
+            font-style: italic;
+            color: #555;
+            padding-left: 20px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .poem p {
+            margin: 6px 0;
+            line-height: 1.3;
+        }
+        
+        .poem-line {
+            /* 诗句样式 - 左对齐 */
+            text-align: left;
+        }
+        
+        .poem-author {
+            /* 作者信息样式 - 右对齐 */
+            text-align: right;
+            padding-right: 20px;
+            font-style: normal;
+            color: #666;
+        }
+        
+        .proverb {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .proverb p {
+            line-height: 1.3;
+            margin: 6px 0;
+        }
+        /* 雨水容器特殊样式 */
+        #yushui {
+            background-color:  rgba(129, 177, 132, 0.2);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .yushui-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .yushui-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .yushui-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 惊蛰容器特殊样式 */
+        #jingzhe {
+            background-color:  rgba(129, 177, 132, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .jingzhe-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .jingzhe-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .jingzhe-content {
+            width: 70%;
+            height: 100%;
+            padding: 0 20px;
+            overflow-y: auto;
+        }
+
+        /* 春分容器特殊样式 */
+        #chunfen {
+            background-color: rgba(129, 177, 132, 0.3);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chunfen-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .chunfen-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chunfen-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 清明容器特殊样式 */
+        #qingming {
+            background-color:  rgba(129, 177, 132, 0.4);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .qingming-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .qingming-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .qingming-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+
+        /* 谷雨容器特殊样式 */
+        #guyu {
+            background-color:  rgba(129, 177, 132, 0.5);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .guyu-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .guyu-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .guyu-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 节气内容区域样式修改 */
+        .lichun-content,
+        .yushui-content,
+        .jingzhe-content,
+        .chunfen-content,
+        .qingming-content,
+        .guyu-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 新增关键属性 */
+        }
+
+        .icon {
+            font-size: 1.4em;
+            text-decoration: none !important; /* 新增 */
+            border: none !important; /* 防止边框干扰 */
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: rgb(237, 201, 128);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            /* 统一箭头样式 */
+            .top-left-link .icon,
+            .top-right-link .icon {
+                font-size: 1.4em;
+                transition: transform 0.3s ease;
+            }
+
+            /* 悬停动画效果 */
+            .top-left-link:hover .icon {
+                transform: translateX(-5px);
+            }
+
+            .top-right-link:hover .icon {
+                transform: translateX(5px);
+            }
+
+            /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+
+            /* 移动端适配 */
+            @media (max-width: 768px) {
+                .top-left-link,
+                .top-right-link {
+                    padding: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    backdrop-filter: blur(3px);
+                }
+                .top-left-link { left: 10px; }
+                .top-right-link { right: 10px; }
+                .icon { font-size: 1.2em; }
+            }
+    </style>
+</head>
+<body>
+    <a href="昼夜长短变化.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="SUMMER.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <div class="container header">
+        <!-- 头部内容 -->
+        <h1>春</h1>
+        <div class="chun-terms">
+            <p onclick="scrollToTerm('lichun')">立春</p>
+            <p onclick="scrollToTerm('yushui')">雨水</p>
+            <p onclick="scrollToTerm('jingzhe')">惊蛰</p>
+            <p onclick="scrollToTerm('chunfen')">春分</p>
+            <p onclick="scrollToTerm('qingming')">清明</p>
+            <p onclick="scrollToTerm('guyu')">谷雨</p>
+        </div>
+    </div>
+    
+    <div class="container content">
+        <!-- 主要内容区域 -->
+        <div class="season-container" id="lichun">
+            <div class="lichun-image">
+                <img src="images/立春.png" alt="立春">
+            </div>
+            <div class="lichun-content">
+                <h3>立春 - 春季的开始</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>咬春</strong>：吃春饼（卷合菜）、生啃萝卜（寓意"咬得草根断，百事皆顺"）。</p>
+                <p><strong>鞭春牛</strong>：打碎泥塑春牛，争抢碎片祈福（如浙江衢州"九华立春祭"为国家级非遗）。</p>
+                <p><strong>打春</strong>：广东用芭蕉叶裹糯米饭祭祀土地神。</p>
+                <p><strong>游春</strong>：民间舞春牛、贴"春"字剪纸，祈求丰收。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"律回岁晚冰霜少，春到人间草木知。"</p>
+                    <p class="poem-author">——张栻《立春偶成》</p>
+                    <p class="poem-line">"春日春盘细生菜，忽忆两京梅发时。"</p>
+                    <p class="poem-author">——杜甫《立春日》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事预测</strong>："立春晴，一春晴；立春下，一春下。"</p>
+                    <p><strong>气候规律</strong>："春打六九头，农民不用愁。"（指立春在"六九"首日，预兆丰收）</p>
+                    <p><strong>生活智慧</strong>："立春寒，一春暖；立春暖，一春寒。"（倒春寒预警）</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="yushui">
+            <div class="yushui-image">
+                <img src="images/雨水1.jpg" alt="雨水">
+            </div>
+            <div class="yushui-content">
+                <h3>雨水 - 降雨开始增多</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭龙王</strong>：多地设供桌供奉，祈求降水适中。</p>
+                <p><strong>占稻色</strong>：爆炒糯谷，以米花成色预卜丰收。</p>
+                <p><strong>回娘家</strong>：四川出嫁女携"罐罐肉"（猪脚、海带）探父母。</p>
+                <p><strong>养生饮食</strong>：喝枸杞菊花茶、吃春笋，润燥生津。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"好雨知时节，当春乃发生。"</p>
+                    <p class="poem-author">——杜甫《春夜喜雨》</p>
+                    <p class="poem-line">"小楼一夜听春雨，深巷明朝卖杏花。"</p>
+                    <p class="poem-author">——陆游《临安春雨初霁》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："雨水不落，下秧无着""麦田返浆，抓紧松耪"。</p>
+                    <p><strong>气候预测</strong>："雨水东风起，伏天必有雨""雨水明，夏至晴"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="jingzhe">
+            <div class="jingzhe-image">
+                <img src="images/惊蛰.png" alt="惊蛰">
+            </div>
+            <div class="jingzhe-content">
+                <h3>惊蛰 - 春雷惊醒冬眠动物</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭白虎</strong>：广东等地用纸绘白虎像，以猪血涂口，祈求平安。</p>
+                <p><strong>打小人</strong>：南方用鞋底拍打纸小人，驱赶霉运。</p>
+                <p><strong>吃梨</strong>：北方"惊蛰吃梨，远离病害"，"梨"谐音"离"寓意驱虫。</p>
+                <p><strong>炒虫</strong>：广西、云南爆炒玉米、黄豆，象征消灭虫害。</p>
+                <p><strong>蒙鼓皮</strong>：《周礼》记载惊蛰蒙新鼓皮，顺应天时。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"仲春遘时雨，始雷发东隅。"</p>
+                    <p class="poem-author">——陶渊明《拟古·惊蛰》</p>
+                    <p class="poem-line">"微雨众卉新，一雷惊蛰始。"</p>
+                    <p class="poem-author">——韦应物《观田家》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："惊蛰一犁土，春分地气通""冻土化开，快种大麦"。</p>
+                    <p><strong>气候预测</strong>："惊蛰闻雷，谷米贱似泥""春雷响，万物长"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="chunfen">
+            <div class="chunfen-image">
+                <img src="images/春分.png" alt="春分">
+            </div>
+            <div class="chunfen-content">
+                <h3>春分 - 昼夜平分</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭日</strong>：北京日坛曾为皇帝祭日场所，民间祭拜土地神。</p>
+                <p><strong>犒牛</strong>：江南以糯米团喂耕牛，感谢劳作。</p>
+                <p><strong>吃春菜</strong>：岭南采野苋菜与鱼片煮"春汤"，祈求健康。</p>
+                <p><strong>粘雀嘴</strong>：煮汤圆置于田间，防鸟啄食庄稼。</p>
+                <p><strong>竖蛋</strong>：春分日尝试立鸡蛋，成功者寓意好运。</p>
+                <p><strong>放风筝</strong>：踏青时放纸鸢，象征放走晦气。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"仲春初四日，春色正中分。绿野徘徊月，晴天断续云。"</p>
+                    <p class="poem-author">——徐铉《春分日》</p>
+                    <p class="poem-line">"雨霁风光，春分天气。千花百卉争明媚。"</p>
+                    <p class="poem-author">——欧阳修《春日词五首·其三》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："春分麦起身，一刻值千金""春分种芍药，到老不开花"。</p>
+                    <p><strong>气候预测</strong>："春分有雨家家忙，先种瓜豆后插秧""春分南风，先雨后旱"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="qingming">
+            <div class="qingming-image">
+                <img src="images/清明.png" alt="清明">
+            </div>
+            <div class="qingming-content">
+                <h3>清明 - 清洁明净的时节</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭祖</strong>：携带鲜花、纸钱祭扫，寓意缅怀先人。</p>
+                <p><strong>环保祭扫</strong>：推广电子香烛，减少纸钱焚烧。</p>
+                <p><strong>吃青团</strong>：江南以艾草汁拌糯米，寓意驱邪避毒。</p>
+                <p><strong>馓子粥</strong>：北方部分地区食馓子（油炸面食）配粥。</p>
+                <p><strong>踏青</strong>：郊游赏花，亲近自然。</p>
+                <p><strong>放风筝</strong>：纸鸢飞天，象征放走晦气。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"清明时节雨纷纷，路上行人欲断魂。"</p>
+                    <p class="poem-line">"莫辞盏酒十分劝，只恐风花一片红。"</p>
+                    <p class="poem-author">——程颢《郊行即事》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："清明前后，点瓜种豆""植树造林，莫过清明"。</p>
+                    <p><strong>气候预测</strong>："清明断雪，谷雨断霜""雨打清明前，春雨定频繁"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="guyu">
+            <div class="guyu-image">
+                <img src="images/谷雨.png" alt="谷雨">
+            </div>
+            <div class="guyu-content">
+                <h3>谷雨 - 雨生百谷</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭仓颉</strong>：陕西白水县有祭祀文祖仓颉的传统，庙会期间扭秧歌、耍社火。</p>
+                <p><strong>祭海</strong>：沿海渔民举行海祭，祈求出海平安。</p>
+                <p><strong>吃春菜</strong>：北方谷雨前后食香椿，寓意身壮力健。</p>
+                <p><strong>喝谷雨茶</strong>：南方采摘雨前茶，传说有清火、辟邪功效。</p>
+                <p><strong>走谷雨</strong>：青年妇女走村串亲，寓意与自然融合。</p>
+                <p><strong>赏牡丹</strong>：谷雨前后牡丹盛开，有"谷雨花"之称。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"谷雨春光晓，山川黛色青。叶间鸣戴胜，泽水长浮萍。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·谷雨三月中》</p>
+                    <p class="poem-line">"枪旗冉冉绿丛园，谷雨初晴叫杜鹃。"</p>
+                    <p class="poem-author">——齐己《闻道林诸友尝茶因有寄》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："谷雨前后，种瓜点豆""谷雨麦挑旗，立夏麦头齐"。</p>
+                    <p><strong>气候预测</strong>："谷雨有雨好种棉""谷雨下秧，立夏栽"。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
+
+    <script>
+        // 平滑滚动到对应节气
+        function scrollToTerm(termId) {
+            const element = document.getElementById(termId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth', // 平滑滚动
+                    block: 'start'      // 对齐到顶部
+                });
+                
+                // 添加临时高亮效果
+                element.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)';
+                setTimeout(() => {
+                    element.style.boxShadow = 'none';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

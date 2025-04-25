@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冬季习俗诗歌谚语</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "宋体", serif; 
+            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .container {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            height: 200px;
+            background: linear-gradient(
+                to bottom, 
+                rgba(82, 149, 178, 0.8),  /* 顶部颜色 */
+                rgba(138, 180, 201, 0.4)  /* 底部颜色 */
+            );
+            display: flex;
+            flex-direction: column; /* 改为垂直排列 */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px 0; /* 内边距 */
+        }
+        
+        .content {
+            height: 800px;
+            background-image: url('images/背景2.jpg'); /* 替换为你的图片路径 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10px 40px 40px; /* 上边距10px，左右40px，下边距40px */
+            color: #fff;
+            overflow-y: auto;
+            /* 内部滚动 */
+            overflow-y: auto; /* 允许内部滚动 */
+            max-height: 800px; /* 限制最大高度 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+
+
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar {
+            width: 0;  /* 隐藏垂直滚动条 */
+            height: 0; /* 隐藏水平滚动条 */
+        }
+
+        h1 {
+            font-family: "SimSun", "宋体", serif; 
+            font-size: 5em;
+            color: #d0e2e6;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleAnimation 1.5s ease-in-out;
+            margin-top: 8px;
+            margin-bottom: 0px;
+        }
+
+        .dong-terms {
+            display: flex;
+            justify-content: space-around; /* 均匀分布 */
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 6px 6px;
+            width: 60%; 
+            border-radius: 8px;
+            margin-top: 4px;
+        }
+        
+        .dong-terms p {
+            margin: 0;
+            padding: 5px 5px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            cursor: pointer; /* 鼠标指针变为手型 */
+            transition: all 0.3s ease; /* 平滑过渡效果 */
+            position: relative;
+        }
+
+        /* 鼠标悬停特效 */
+        .dong-terms p:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+            color: #cee9f5; /* 颜色变亮 */
+        }
+        
+        /* 点击后的反馈效果 */
+        .dong-terms p:active {
+            transform: translateY(1px); /* 按下效果 */
+        }
+        
+        /* 添加下划线指示 */
+        .dong-terms p::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .dong-terms p:hover::after {
+            transform: scaleX(1); /* 悬停时显示下划线 */
+        }
+
+        /* 新增六个节气容器的样式 */
+        .season-container {
+            height: 600px;
+            margin-bottom: 20px; /* 容器之间的间距 */
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .season-container:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+        }
+
+        @keyframes titleAnimation {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 为第一个节气容器添加额外上边距 */
+        .season-container:first-child {
+            margin-top: 10px;
+        }
+        
+        /* 立冬容器特殊样式 */
+        #lidong {
+            background-color: rgba(179, 211, 227, 0.2);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .lidong-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .lidong-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .lidong-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+        
+        .lidong-content h3,
+        .xiaoxue-content h3,
+        .daxue-content h3,
+        .dongzhi-content h3,
+        .xiaohan-content h3,
+        .dahan-content h3 {
+            color: #2c465e;
+            border-bottom: 2px solid #69bbcf;
+            padding-bottom: 3px;
+            margin-top: 0;
+            margin: 12px 0; 
+        }
+        
+        .lidong-content p,
+        .xiaoxue-content p,
+        .daxue-content p,
+        .dongzhi-content p,
+        .xiaohan-content p,
+        .dahan-content p{
+            margin: 8px 0;
+            line-height: 1.3;
+        }
+        
+        .poem {
+            font-style: italic;
+            color: #555;
+            padding-left: 20px;
+            border-left: 3px solid #69bbcf;
+        }
+
+        .poem p {
+            margin: 6px 0;
+            line-height: 1.3;
+        }
+        
+        .poem-line {
+            /* 诗句样式 - 左对齐 */
+            text-align: left;
+        }
+        
+        .poem-author {
+            /* 作者信息样式 - 右对齐 */
+            text-align: right;
+            padding-right: 20px;
+            font-style: normal;
+            color: #666;
+        }
+        
+        .proverb {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .proverb p {
+            line-height: 1.3;
+            margin: 6px 0;
+        }
+
+        /* 小雪容器特殊样式 */
+        #xiaoxue {
+            background-color: rgba(133, 187, 210, 0.2);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .xiaoxue-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .xiaoxue-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .xiaoxue-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 大雪容器特殊样式 */
+        #daxue {
+            background-color: rgba(106, 169, 196, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .daxue-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .daxue-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .daxue-content {
+            width: 70%;
+            height: 100%;
+            padding: 0 20px;
+            overflow-y: auto;
+        }
+
+        /* 冬至容器特殊样式 */
+        #dongzhi {
+            background-color: rgba(82, 149, 178, 0.2);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .dongzhi-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .dongzhi-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dongzhi-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 小寒容器特殊样式 */
+        #xiaohan {
+            background-color: rgba(82, 149, 178, 0.3);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .xiaohan-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .xiaohan-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .xiaohan-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+
+        /* 大寒容器特殊样式 */
+        #dahan {
+            background-color: rgba(82, 149, 178, 0.35);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .dahan-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .dahan-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dahan-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 节气内容区域样式修改 */
+        .lidong-content,
+        .xiaoxue-content,
+        .daxue-content,
+        .dongzhi-content,
+        .xiaohan-content,
+        .dahan-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 新增关键属性 */
+        }
+
+        .icon {
+            font-size: 1.4em;
+            text-decoration: none !important; /* 新增 */
+            border: none !important; /* 防止边框干扰 */
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: rgb(236, 163, 17);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            /* 统一箭头样式 */
+            .top-left-link .icon,
+            .top-right-link .icon {
+                font-size: 1.4em;
+                transition: transform 0.3s ease;
+            }
+
+            /* 悬停动画效果 */
+            .top-left-link:hover .icon {
+                transform: translateX(-5px);
+            }
+
+            .top-right-link:hover .icon {
+                transform: translateX(5px);
+            }
+
+            /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+
+            /* 移动端适配 */
+            @media (max-width: 768px) {
+                .top-left-link,
+                .top-right-link {
+                    padding: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    backdrop-filter: blur(3px);
+                }
+                .top-left-link { left: 10px; }
+                .top-right-link { right: 10px; }
+                .icon { font-size: 1.2em; }
+            }
+    </style>
+</head>
+<body>
+    <a href="AUTUNM.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="问答.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <div class="container header">
+        <!-- 头部内容 -->
+        <h1>冬</h1>
+        <div class="dong-terms">
+            <p onclick="scrollToTerm('lidong')">立冬</p>
+            <p onclick="scrollToTerm('xiaoxue')">小雪</p>
+            <p onclick="scrollToTerm('daxue')">大雪</p>
+            <p onclick="scrollToTerm('dongzhi')">冬至</p>
+            <p onclick="scrollToTerm('xiaohan')">小寒</p>
+            <p onclick="scrollToTerm('dahan')">大寒</p>
+        </div>
+    </div>
+    
+    <div class="container content">
+        <!-- 主要内容区域 -->
+        <div class="season-container" id="lidong">
+            <div class="lidong-image">
+                <img src="images/立冬.png" alt="立冬">
+            </div>
+            <div class="lidong-content">
+                <h3>立冬 - 冬季的开始</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>贺冬</strong>：人们在这一天更换新衣，互相庆贺，如同庆祝新年一样。</p>
+                <p><strong>补冬</strong>：为了抵御严寒，人们会食用一些温补食物，如羊肉、牛肉、鸡肉等。</p>
+                <p><strong>吃饺子</strong>：在北方，立冬有吃饺子的习俗，寓意着寒冷的冬天即将来临。</p>
+                <p><strong>祭祖祭天</strong>：人们会在立冬这天举行祭祖祭天的活动，感谢祖先和天神的恩赐。</p>
+                <p><strong>冬学</strong>：冬天是农闲季节，许多地方会在这个时候举办"冬学"，进行各种教育活动。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"霜降向人寒，轻冰渌水漫。蟾将纤影出，雁带几行残。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·立冬十月节》</p>
+                    <p class="poem-line">"室小才容膝，墙低仅及肩。方过授衣月，又遇始裘天。"</p>
+                    <p class="poem-author">——陆游《立冬日作》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："立冬晴，一冬晴；立冬雨，一冬雨""立冬打雷要反春"。</p>
+                    <p><strong>农事指导</strong>："立冬前犁金，立冬后犁银，立春后犁铁""立冬种豌豆，一斗还一斗"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="xiaoxue">
+            <div class="xiaoxue-image">
+                <img src="images/小雪.png" alt="小雪">
+            </div>
+            <div class="xiaoxue-content">
+                <h3>小雪 - 开始降雪</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>腌制腊肉</strong>：民间有"冬腊风腌，蓄以御冬"的习俗，小雪后气温下降、天气干燥，适合加工腊肉、香肠等。</p>
+                <p><strong>吃糍粑</strong>：南方某些地方农历十月有吃糍粑的习俗，古时糍粑是南方地区传统节日祭品，最早用于祭牛神。</p>
+                <p><strong>晒鱼干</strong>：小雪时节，沿海地区的人们会开始晒鱼干、储存干粮，以便冬季食用。</p>
+                <p><strong>吃刨汤</strong>：小雪前后，土家族群众有"杀年猪，迎新年"的民俗活动，吃"刨汤"是其风俗习惯。</p>
+                <p><strong>小雪酿酒</strong>：小雪时节有酿酒的习俗，如清代顾禄在《清嘉录》中记载的"冬酿酒"。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"莫怪虹无影，如今小雪时。阴阳依上下，寒暑喜分离。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·小雪十月中》</p>
+                    <p class="poem-line">"檐飞数片雪，瓶插一枝梅。童子敲清磬，先生入定回。"</p>
+                    <p class="poem-author">——陆游《小雪》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："小雪不砍菜，必定有一害""小雪大雪不见雪，来年灭虫忙不撤"。</p>
+                    <p><strong>农事指导</strong>："小雪不分股，大雪不出土""小雪不封地，不过三五日"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="daxue">
+            <div class="daxue-image">
+                <img src="images/大雪.png" alt="大雪">
+            </div>
+            <div class="daxue-content">
+                <h3>大雪 - 雪量增多</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>腌肉</strong>：大雪节气有"小雪腌菜，大雪腌肉"的习俗，家家户户腌制腊肉、香肠等。</p>
+                <p><strong>赏雪景</strong>：大雪时节雪量大，人们外出赏雪、拍照留念。</p>
+                <p><strong>滑冰</strong>：北方河流、湖泊结冰，人们开展滑冰、冰球等冰雪活动。</p>
+                <p><strong>吃火锅</strong>：大雪天寒，人们围坐吃火锅，暖身驱寒。</p>
+                <p><strong>赏梅</strong>：大雪前后梅花盛开，赏梅成为雅俗共赏的活动。</p>
+                <p><strong>晒鱼干</strong>：南方沿海地区晒制鱼干储备冬粮。</p>
+                <p><strong>吃红薯粥</strong>：鲁北地区有"碌碡顶了门，光喝红黏粥"的说法。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"画堂晨起，来报雪花坠。高卷帘栊看佳瑞，皓色远迷庭砌。"</p>
+                    <p class="poem-author">——李白《清平乐·画堂晨起》</p>
+                    <p class="poem-line">"已讶衾枕冷，复见窗户明。夜深知雪重，时闻折竹声。"</p>
+                    <p class="poem-author">——白居易《夜雪》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："瑞雪兆丰年""大雪不寒明年旱"。</p>
+                    <p><strong>农事指导</strong>："大雪一场雪，来年大丰收""大雪不冻，惊蛰不开"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="dongzhi">
+            <div class="dongzhi-image">
+                <img src="images/冬至1.jpg" alt="冬至">
+            </div>
+            <div class="dongzhi-content">
+                <h3>冬至 - 白天最短的一天</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭祖</strong>：冬至是祭天祭祖的日子，民间有祭祖的习俗，表达对先人的敬意和祈求好运的愿望。</p>
+                <p><strong>吃饺子</strong>：北方地区冬至有吃饺子的习俗，与医圣张仲景有关，传说他发明"驱寒娇耳汤"治疗冻伤。</p>
+                <p><strong>吃汤圆</strong>：江南地区冬至有吃汤圆的习俗，汤圆象征团圆和圆满，寄托人们对美好生活的期望。</p>
+                <p><strong>喝冬酿酒</strong>：苏州等地有喝冬酿酒的习俗，冬酿酒是一种加入桂花酿造的米酒，香气宜人。</p>
+                <p><strong>数九</strong>：冬至后开始数九，每九天算一"九"，依此类推，有"一九二九不出手，三九四九冰上走"等民间歌谣。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"邯郸驿里逢冬至，抱膝灯前影伴身。想得家中夜深坐，还应说着远行人。"</p>
+                    <p class="poem-author">——白居易《邯郸冬至夜思家》</p>
+                    <p class="poem-line">"年年至日长为客，忽忽穷愁泥杀人。江上形容吾独老，天边风俗自相亲。"</p>
+                    <p class="poem-author">——杜甫《冬至》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："冬至晴，正月雨；冬至雨，正月晴""冬至冷，春节暖；冬至暖，春节冷"。</p>
+                    <p><strong>农事指导</strong>："冬至前后，种麦正当时""冬至种麦，夏至收麦"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="xiaohan">
+            <div class="xiaohan-image">
+                <img src="images/小寒.png" alt="小寒">
+            </div>
+            <div class="xiaohan-content">
+                <h3>小寒 - 天气寒冷但未到极点</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>腌制腊肉</strong>：许多地方的人们会开始腌制腊肉，以备过年时享用。腌制腊肉需要经过腌制、晾晒、熏烤等工序，最终成为一道独特的美食。这一习俗象征着新年的富足与希望。</p>
+                <p><strong>喝羊肉汤</strong>：在北方和南方，小寒都有喝羊肉汤的习俗。羊肉汤以其温补的特性受到人们的喜爱，它不仅能驱寒暖身，还能为人们带来满满的能量。</p>
+                <p><strong>采摘柑橘</strong>：南方柑橘正值成熟之际，江西、福建等地的人们会在这时采摘柑橘，品尝其甜美的果肉。柑橘富含多种营养成分，有很好的保健功效。</p>
+                <p><strong>祭灶神</strong>：在南方的一些地区，小寒还有祭灶神的习俗。灶神作为民间信仰中的重要神祇，主管家庭的饮食与烟火。人们在这时祭拜灶神，祈求来年家庭安康、五谷丰登。</p>
+                <p><strong>赏梅</strong>：小寒时节，正是梅花盛开的季节。人们会纷纷前往梅园，欣赏梅花的傲雪凌霜，感受冬日里的盎然生机。</p>
+                <p><strong>写春联、剪窗花</strong>：进入小寒，年味渐浓，人们开始忙着写春联、剪窗花，为春节作准备。</p>
+                <p><strong>逛庙会</strong>：一些地方还会举办庙会，人们可以在庙会上欣赏到各种表演、品尝到各种美食、购买到各种年货。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"小寒连大吕，欢鹊垒新巢。拾食寻河曲，衔紫绕树梢。霜鹰近北首，雊雉隐丛茅。莫怪严凝切，春冬正月交。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·小寒十二月节》</p>
+                    <p class="poem-line">"小寒初渡梅花岭，万壑千岩背人境。清远聊为泛宅行，一梦分明堕乡井。"</p>
+                    <p class="poem-author">——苏轼《清远舟中寄耘老》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："小寒胜大寒""小寒暖，春多寒""小寒寒，六畜安"。</p>
+                    <p><strong>农事指导</strong>："小寒大寒，冻成一团""小寒大寒，杀猪过年"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="dahan">
+            <div class="dahan-image">
+                <img src="images/大寒1.jpg" alt="大寒">
+            </div>
+            <div class="dahan-content">
+                <h3>大寒 - 一年中最冷的时期</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>吃糯米饭</strong>：广东地区有大寒吃糯米饭的习俗。糯米饭是一种由糯米和各种配料制作而成的美食，具有御寒滋补功效。</p>
+                <p><strong>喝鸡汤</strong>：南京地区有大寒喝鸡汤的习俗。鸡汤以老母鸡或添加参须、枸杞、黑木耳等合炖，寒冬里喝鸡汤不仅暖身，还寓意着滋补养生。</p>
+                <p><strong>除尘</strong>：家家户户都会进行大扫除活动，称之为"除尘"。人们会清扫屋内的每一个角落，寓意扫除一年的晦气与霉运，迎接新年的吉祥与幸福。</p>
+                <p><strong>糊窗</strong>：用新纸裱糊窗户以迎接新年的到来。糊窗不仅美观大方，还能防风保暖。有的人家还会在窗户上剪贴吉祥图案或窗花等装饰品，增添节日气氛。</p>
+                <p><strong>蒸供</strong>：准备祭祀用的供品，如糕点、饽饽、馒头等，这些供品都是用面蒸制而成的，寓意着对祖先的敬仰和怀念。</p>
+                <p><strong>贴年红</strong>：包括春联、窗花、福字等红色装饰品，寓意着吉祥如意和幸福美满。人们会在家中贴上各种年红装饰品，增添节日的喜庆气氛。</p>
+                <p><strong>腊八粥</strong>：北方地区的重要节日，习俗是吃腊八粥。腊八粥是一种由多样食材熬制而成的粥品，寓意着五谷丰登和吉祥如意。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"腊酒自盈樽，金炉兽炭温。大寒宜近火，无事莫开门。明朝换新律，梅柳待阳春。"</p>
+                    <p class="poem-author">——《咏廿四气诗·大寒十二月中》（作者不详）</p>
+                    <p class="poem-line">"松柏天生独，青青贯四时。心藏后凋节，岁有大寒知。"</p>
+                    <p class="poem-author">——《大寒》（作者不详）</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："大寒一夜星，谷米贵如金""大寒到顶点，日后天渐暖""大寒天气暖，寒到二月满"。</p>
+                    <p><strong>农事指导</strong>："小寒大寒，冷成冰团""大寒不寒，人马不安"。</p>
+                    <p><strong>生活习俗</strong>："大寒大寒，防风御寒""小寒多积肥，大寒迎新年"。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <script>
+        // 平滑滚动到对应节气
+        function scrollToTerm(termId) {
+            const element = document.getElementById(termId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth', // 平滑滚动
+                    block: 'start'      // 对齐到顶部
+                });
+                
+                // 添加临时高亮效果
+                element.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)';
+                setTimeout(() => {
+                    element.style.boxShadow = 'none';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

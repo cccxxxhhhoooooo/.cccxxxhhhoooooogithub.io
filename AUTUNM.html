@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>秋季习俗诗歌谚语</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "宋体", serif; 
+            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .container {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            height: 200px;
+            background: linear-gradient(
+                to bottom, 
+                rgba(192, 139, 115, 0.8),  /* 顶部颜色 */
+                rgba(210, 180, 140, 0.4)  /* 底部颜色 */
+            );
+            display: flex;
+            flex-direction: column; /* 改为垂直排列 */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px 0; /* 内边距 */
+        }
+        
+        .content {
+            height: 800px;
+            background-image: url('images/背景2.jpg'); /* 替换为你的图片路径 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10px 40px 40px; /* 上边距10px，左右40px，下边距40px */
+            color: #fff;
+            overflow-y: auto;
+            /* 内部滚动 */
+            overflow-y: auto; /* 允许内部滚动 */
+            max-height: 800px; /* 限制最大高度 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar {
+            width: 0;  /* 隐藏垂直滚动条 */
+            height: 0; /* 隐藏水平滚动条 */
+        }
+
+        h1 {
+            font-family: "SimSun", "宋体", serif; 
+            font-size: 5em;
+            color: #f4ecd0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titleAnimation 1.5s ease-in-out;
+            margin-top: 8px;
+            margin-bottom: 0px;
+        }
+
+        .qiu-terms {
+            display: flex;
+            justify-content: space-around; /* 均匀分布 */
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 6px 6px;
+            width: 60%; 
+            border-radius: 8px;
+            margin-top: 4px;
+        }
+        
+        .qiu-terms p {
+            margin: 0;
+            padding: 5px 5px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            cursor: pointer; /* 鼠标指针变为手型 */
+            transition: all 0.3s ease; /* 平滑过渡效果 */
+            position: relative;
+        }
+
+        /* 鼠标悬停特效 */
+        .qiu-terms p:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+            color: #fff5e6; /* 颜色变亮 */
+        }
+        
+        /* 点击后的反馈效果 */
+        .qiu-terms p:active {
+            transform: translateY(1px); /* 按下效果 */
+        }
+        
+        /* 添加下划线指示 */
+        .qiu-terms p::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .qiu-terms p:hover::after {
+            transform: scaleX(1); /* 悬停时显示下划线 */
+        }
+
+        /* 新增六个节气容器的样式 */
+        .season-container {
+            height: 600px;
+            margin-bottom: 20px; /* 容器之间的间距 */
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .season-container:hover {
+            transform: translateY(-3px); /* 轻微上浮 */
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 阴影增强 */
+        }
+
+        @keyframes titleAnimation {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 为第一个节气容器添加额外上边距 */
+        .season-container:first-child {
+            margin-top: 10px;
+        }
+        
+        /* 立秋容器特殊样式 */
+        #liqiu {
+            background-color: rgba(248, 225, 205, 0.4);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .liqiu-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .liqiu-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .liqiu-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+        
+        .liqiu-content h3,
+        .chushu-content h3,
+        .bailu-content h3,
+        .qiufen-content h3,
+        .hanlu-content h3,
+        .shuangjiang-content h3 {
+            color: #805a30;
+            border-bottom: 2px solid #e9b970;
+            padding-bottom: 3px;
+            margin-top: 0;
+            margin: 12px 0; 
+        }
+        
+        .liqiu-content p,
+        .chushu-content p,
+        .bailu-content p,
+        .qiufen-content p,
+        .hanlu-content p,
+        .shuangjiang-content p{
+            margin: 8px 0;
+            line-height: 1.3;
+        }
+        
+        .poem {
+            font-style: italic;
+            color: #555;
+            padding-left: 20px;
+            border-left: 3px solid #e9b970;
+        }
+
+        .poem p {
+            margin: 6px 0;
+            line-height: 1.3;
+        }
+        
+        .poem-line {
+            /* 诗句样式 - 左对齐 */
+            text-align: left;
+        }
+        
+        .poem-author {
+            /* 作者信息样式 - 右对齐 */
+            text-align: right;
+            padding-right: 20px;
+            font-style: normal;
+            color: #666;
+        }
+        
+        .proverb {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .proverb p {
+            line-height: 1.3;
+            margin: 6px 0;
+        }
+        /* 处暑容器特殊样式 */
+        #chushu {
+            background-color: rgba(160, 82, 45, 0.1);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chushu-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .chushu-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chushu-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 白露容器特殊样式 */
+        #bailu {
+            background-color: rgba(160, 82, 45, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .bailu-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .bailu-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .bailu-content {
+            width: 70%;
+            height: 100%;
+            padding: 0 20px;
+            overflow-y: auto;
+        }
+
+        /* 秋分容器特殊样式 */
+        #qiufen {
+            background-color: rgba(160, 82, 45, 0.25);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .qiufen-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .qiufen-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .qiufen-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 寒露容器特殊样式 */
+        #hanlu {
+            background-color: rgba(160, 82, 45, 0.3);
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 左右分开 */
+            align-items: center;
+            padding: 20px; /* 增加内边距 */
+        }
+        
+        .hanlu-image {
+            width: 30%; /* 图片区域宽度 */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .hanlu-image img {
+            width: auto;
+            max-height: 590px; /* 略小于容器高度 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hanlu-content {
+            width: 70%; /* 内容区域宽度 */
+            height: 100%;
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 0,20px;
+        }
+
+        /* 霜降容器特殊样式 */
+        #shuangjiang {
+            background-color: rgba(160, 82, 45, 0.35);
+            display: flex;
+            flex-direction: row-reverse; /* 反转布局：图片在右 */
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .shuangjiang-image {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end; /* 图片靠右 */
+            align-items: center;
+        }
+        
+        .shuangjiang-image img {
+            width: auto;
+            max-height: 590px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .shuangjiang-content {
+            width: 70%;
+            padding: 0 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        /* 节气内容区域样式修改 */
+        .liqiu-content,
+        .chushu-content,
+        .bailu-content,
+        .qiufen-content,
+        .hanlu-content,
+        .shuangjiang-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none; /* 新增关键属性 */
+        }
+
+        .icon {
+            font-size: 1.4em;
+            text-decoration: none !important; /* 新增 */
+            border: none !important; /* 防止边框干扰 */
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: rgb(236, 163, 17);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            /* 统一箭头样式 */
+            .top-left-link .icon,
+            .top-right-link .icon {
+                font-size: 1.4em;
+                transition: transform 0.3s ease;
+            }
+
+            /* 悬停动画效果 */
+            .top-left-link:hover .icon {
+                transform: translateX(-5px);
+            }
+
+            .top-right-link:hover .icon {
+                transform: translateX(5px);
+            }
+
+            /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+
+            /* 移动端适配 */
+            @media (max-width: 768px) {
+                .top-left-link,
+                .top-right-link {
+                    padding: 8px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 50%;
+                    backdrop-filter: blur(3px);
+                }
+                .top-left-link { left: 10px; }
+                .top-right-link { right: 10px; }
+                .icon { font-size: 1.2em; }
+            }
+    </style>
+</head>
+<body>
+    <a href="SUMMER.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="WINTER.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <div class="container header">
+        <!-- 头部内容 -->
+        <h1>秋</h1>
+        <div class="qiu-terms">
+            <p onclick="scrollToTerm('liqiu')">立秋</p>
+            <p onclick="scrollToTerm('chushu')">处暑</p>
+            <p onclick="scrollToTerm('bailu')">白露</p>
+            <p onclick="scrollToTerm('qiufen')">秋分</p>
+            <p onclick="scrollToTerm('hanlu')">寒露</p>
+            <p onclick="scrollToTerm('shuangjiang')">霜降</p>
+        </div>
+    </div>
+    
+    <div class="container content">
+        <!-- 主要内容区域 -->
+        <div class="season-container" id="liqiu">
+            <div class="liqiu-image">
+                <img src="images/立秋.png" alt="立秋">
+            </div>
+            <div class="liqiu-content">
+                <h3>立秋 - 秋季的开始</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭祀土地神</strong>：立秋后第五个戊日为秋社日，古代帝王与民间均祭祀土地神，感谢土地滋养万物，祈求来年丰收。</p>
+                <p><strong>贴秋膘</strong>：夏季食欲不佳，立秋后天气转凉，人们进补（如吃肉、炖汤）以恢复体力，为冬季储能。</p>
+                <p><strong>啃秋</strong>：南方地区立秋吃西瓜、玉米等，寓意迎接秋天，免除秋燥。</p>
+                <p><strong>晒秋</strong>：山区村民利用房前屋后晾晒农作物。</p>
+                <p><strong>悬秤称人</strong>：对比立夏体重，检验"苦夏"影响。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"袅袅檐树动，好风西南来……云天收夏色，木叶动秋声。"</p>
+                    <p class="poem-author">——白居易《立秋夕凉风忽至》</p>
+                    <p class="poem-line">"乳鸦啼散玉屏空，一枕新凉一扇风。睡起秋声无觅处，满阶梧叶月明中。"</p>
+                    <p class="poem-author">——刘翰《立秋》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："立了秋，把扇丢""一场秋雨一场寒"。</p>
+                    <p><strong>农事指导</strong>："立秋种芝麻，老死不开花""立秋三场雨，秕稻变成米"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="chushu">
+            <div class="chushu-image">
+                <img src="images/处暑.png" alt="处暑">
+            </div>
+            <div class="chushu-content">
+                <h3>处暑 - 炎热天气结束</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>吃鸭子</strong>：鸭肉性凉，适合秋季食用，有滋阴润肺、养胃生津的作用。北京保留处暑吃百合鸭传统，江苏有"处暑送鸭，无病各家"习俗。</p>
+                <p><strong>放河灯</strong>：悼念逝去亲人，祈求平安。河灯底座呈莲花形，放入江河任其漂流。</p>
+                <p><strong>开渔节</strong>：沿海地区欢送渔民出海捕鱼，感恩海洋馈赠。此时海域水温高，鱼群聚集，适合捕捞。</p>
+                <p><strong>煎药茶</strong>：自唐代盛行，用霍香、薄荷等药材泡茶，清热解毒、祛湿健脾。</p>
+                <p><strong>拜土地公</strong>：感谢土地滋养万物，祈求来年丰收。部分地区办"施福会"感恩土地公。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"离离暑云散，袅袅凉风起……朱颜易销歇，白日无穷已。"</p>
+                    <p class="poem-author">——白居易《早秋曲江感怀》</p>
+                    <p class="poem-line">"四时俱可喜，最好新秋时……柴门傍野水，邻叟闲相期。"</p>
+                    <p class="poem-author">——陆游《闲适》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>农事指导</strong>："处暑收黍，白露收谷""处暑三日稻有孕，寒露到来稻入囤"。</p>
+                    <p><strong>气候预测</strong>："处暑天还暑，好似秋老虎""处暑雨，粒粒皆是米"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="bailu">
+            <div class="bailu-image">
+                <img src="images/白露.png" alt="白露">
+            </div>
+            <div class="bailu-content">
+                <h3>白露 - 天气转凉，露凝而白</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>收清露</strong>：民间认为白露露水延年益寿，李时珍《本草纲目》记载："百草头上秋露，愈百病，止消渴。"</p>
+                <p><strong>饮白露茶</strong>：白露茶品质上乘，有"春茶苦，夏茶涩，要喝茶，秋白露"之说。</p>
+                <p><strong>酿五谷酒</strong>：湖南、江苏、浙江等地用糯米、高粱酿"白露米酒"，温中含热，待客必备。</p>
+                <p><strong>吃番薯</strong>：白露吃番薯可健脾开胃，李时珍《本草纲目》称："甘薯补虚，健脾开胃。"</p>
+                <p><strong>祭禹王</strong>：江苏太湖畔渔民祭禹王（大禹），祈求水运平安，历时一周。</p>
+                <p><strong>吃龙眼</strong>：福建福州有"白露必吃龙眼"习俗，益气补脾，养血安神。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"戍鼓断人行，边秋一雁声。露从今夜白，月是故乡明。"</p>
+                    <p class="poem-author">——杜甫《月夜忆舍弟》</p>
+                    <p class="poem-line">"秋寒依依风过河，白露萧萧洞庭波。"</p>
+                    <p class="poem-author">——汤惠休《秋思引》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："白露秋风夜，一夜凉一夜""白露天气晴，谷米白如银"。</p>
+                    <p><strong>农事指导</strong>："白露种葱，寒露种蒜""白露到，秋耕忙"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="qiufen">
+            <div class="qiufen-image">
+                <img src="images/秋分.png" alt="秋分">
+            </div>
+            <div class="qiufen-content">
+                <h3>秋分 - 昼夜平分</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>祭月</strong>：秋分曾是传统的"祭月节"，古代帝王有祭月的礼制，民间也有祭月的习俗。北京的月坛是明清皇帝祭月的地方。</p>
+                <p><strong>竖蛋</strong>：秋分时节有竖蛋的习俗，寓意着对生命和繁衍的尊重与敬仰。</p>
+                <p><strong>吃秋菜</strong>：岭南地区有吃秋菜的习俗，秋菜是一种野生的苋菜，与鱼片煮汤，称为"秋汤"。</p>
+                <p><strong>粘雀子嘴</strong>：秋分这一天，客家农民有粘雀子嘴的习俗，用汤圆煮好后置于室外田边地坎，防止雀子破坏庄稼。</p>
+                <p><strong>放风筝</strong>：秋分时节天气适宜，是放风筝的好时机，人们通过放风筝来娱乐身心，寄托对美好生活的向往。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"琴弹南吕调，风色已高清。云散飘颻影，雷收振怒声。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·秋分八月中》</p>
+                    <p class="poem-line">"金陵山色里，蝉急向秋分。迥寺横洲岛，归僧渡水云。"</p>
+                    <p class="poem-author">——马戴《送僧归金山寺》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："白露秋分夜，一夜冷一夜""秋分有雨来年丰"。</p>
+                    <p><strong>农事指导</strong>："秋分种麦正当时""秋分不起葱，霜降必定空"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="hanlu">
+            <div class="hanlu-image">
+                <img src="images/寒露.png" alt="寒露">
+            </div>
+            <div class="hanlu-content">
+                <h3>寒露 - 露水已寒，将要结冰</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>吃梨</strong>：寒露时节天气干燥，吃梨可润肺止咳，亦有"离别"寓意。</p>
+                <p><strong>吃螃蟹</strong>：江南地区有吃螃蟹的习俗，螃蟹肉质鲜美，营养丰富，是秋季佳肴。</p>
+                <p><strong>斗蟋蟀</strong>：老北京地区有在寒露时节斗蟋蟀的传统，源于唐朝，盛行于明清。</p>
+                <p><strong>赏红叶</strong>：寒露后，枫叶渐红，是赏枫的好时节。北京香山等地有赏红叶的习俗。</p>
+                <p><strong>喝菊花酒</strong>：寒露时节有喝菊花酒的传统，菊花象征长寿，酒有延年益寿之意。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"寒露惊秋晚，朝看菊渐黄。千家风扫叶，万里雁随阳。"</p>
+                    <p class="poem-author">——元稹《咏廿四气诗·寒露九月节》</p>
+                    <p class="poem-line">"袅袅凉风动，凄凄寒露零。兰衰花始白，荷破叶犹青。"</p>
+                    <p class="poem-author">——白居易《池上》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："寒露多雨水，春季无大水""寒露收豆，花生收在秋分后"。</p>
+                    <p><strong>农事指导</strong>："秋分早，霜降迟，寒露种麦正当时""寒露到霜降，种麦莫慌张"。</p>
+                </div>
+            </div>
+        </div>
+        <div class="season-container" id="shuangjiang">
+            <div class="shuangjiang-image">
+                <img src="images/霜降.png" alt="霜降">
+            </div>
+            <div class="shuangjiang-content">
+                <h3>霜降 - 天气渐冷，开始有霜</h3>
+                
+                <h4>🌿习俗🌿</h4>
+                <p><strong>吃柿子</strong>："霜降吃丁柿，不会流鼻涕"，寓意御寒润肺。</p>
+                <p><strong>煲四物汤</strong>：福建等地以当归、川芎等炖补，养血驱寒。</p>
+                <p><strong>饮菊花酒</strong>：登高赏菊后佐以菊花酒，祈福安康。</p>
+                <p><strong>除尘糊窗</strong>：清扫屋舍，裱糊新纸，寓意辞旧迎新。</p>
+                <p><strong>霜降祭神</strong>：部分地区祭祀"霜降神"，祈求风调雨顺。</p>
+                <p><strong>赏红叶</strong>：北京香山、南京栖霞山等地迎来红叶最佳观赏期。</p>
+                <p><strong>赶秋集</strong>：南方乡村举办集市，采购冬储物资。</p>
+                
+                <h4>🌻诗词🌻</h4>
+                <div class="poem">
+                    <p class="poem-line">"火烧寒涧松为烬，霜降春林花委地。"</p>
+                    <p class="poem-author">——白居易《谪居》</p>
+                    <p class="poem-line">"九月望日，与客习射西园，余病不能射。"</p>
+                    <p class="poem-author">——叶梦得《水调歌头》</p>
+                </div>
+                
+                <h4>🌳民间谚语🌳</h4>
+                <div class="proverb">
+                    <p><strong>气候预测</strong>："霜降见霜，米谷满仓""霜降晴，风雪少；霜降雨，风雪多"。</p>
+                    <p><strong>农事指导</strong>："霜降不摘棉，霜打莫怨天""霜降配羊清明羔，天气暖和有青草"。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+
+    <script>
+        // 平滑滚动到对应节气
+        function scrollToTerm(termId) {
+            const element = document.getElementById(termId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth', // 平滑滚动
+                    block: 'start'      // 对齐到顶部
+                });
+                
+                // 添加临时高亮效果
+                element.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)';
+                setTimeout(() => {
+                    element.style.boxShadow = 'none';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

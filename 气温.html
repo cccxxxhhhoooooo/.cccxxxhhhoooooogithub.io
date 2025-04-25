@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二十四节气气温</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 0.5rem;
+            text-align: center;
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        :root {
+            --spring: #c1ed8f;
+            --summer: #f0baaa;
+            --autumn: #f3d67f;
+            --winter: #a4d3f9;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url('images/背景2.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding-top: 2rem;
+            position: relative;
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .top-right-link:hover .icon {
+            transform: translateX(5px);
+        }
+        .top-left-link:hover .icon {
+            transform: translateX(-5px);
+        }
+
+        /* 图标版本 */
+        .icon-link {
+            color: #f8ab7b;
+            font-size: 1.4em;
+            text-decoration: none;
+        }
+        @media (max-width: 768px) {
+        .top-left-link,
+        .top-right-link {
+            padding: 8px 12px;
+            top: 15px;
+        }
+        .top-left-link { left: 10px; }
+        .top-right-link { right: 10px; }
+        .icon { font-size: 1.2em; }
+    }
+        .climate-table {
+            z-index: 1;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+
+        .climate-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 2rem auto;
+            max-width: 1000px;
+            table-layout: fixed;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        .climate-table table {
+            position: relative;
+        }
+
+        .climate-table table::after {
+            content: '';
+            position: absolute;
+            left: 50%; 
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: rgba(221, 221, 221, 0.7);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        .table thead th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 1.1rem;
+        }
+
+        .climate-table td, 
+        .climate-table th {
+            text-align: center;
+            padding: 12px 8px;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+
+        .temp-range {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            min-width: 70px;
+            color: #82c1f4;
+            
+        }
+
+
+        .season-tag {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 8px;
+            font-size: 0.85em;
+        }
+
+        .spring { background: var(--spring); color: #2e7d32; }
+        .summer { background: var(--summer); color: #c62828; }
+        .autumn { background: var(--autumn); color: #8d6e63; }
+        .winter { background: var(--winter); color: #1565c0; }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(233, 236, 239, 0.7);
+            transform: none;
+        }
+
+
+        .climate-table tbody tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        @media (max-width: 768px) {
+            .climate-table td, 
+            .climate-table th {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+            
+    
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .data-source {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+    .data-source:hover {
+        opacity: 1;
+    }
+    .season-tag {
+        transition: all 0.3s ease;
+        transform: rotate(0);
+    }
+    .climate-table tbody tr:hover .season-tag {
+        transform: rotate(-15deg);
+    }
+    
+    </style>
+</head>
+<body>
+    <a href="历史渊源.html" class="top-left-link icon-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    
+    <a href="降水.html" class="top-right-link icon-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+
+    <div class="header">
+        <h1>🌿 二十四节气平均气温范围 🌸</h1>
+        <p class="subtitle">（以黄河中下游地区为例）</p>
+        <div id="temperatureChart"></div>
+    </div>
+    <div class="data-source">
+        <small class="text-muted">数据来源：中国气象局</small>
+    </div>
+    <div class="climate-table">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <colgroup>
+                    <col style="width: 20%">
+                    <col style="width: 30%">
+                    <col style="width: 20%">
+                    <col style="width: 30%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>节气</th>
+                        <th>平均气温范围</th>
+                        <th>节气</th>
+                        <th>平均气温范围</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 春季节气 -->
+                    <tr>
+                        <td><span class="season-tag spring">春</span>立春</td>
+                        <td class="temp-range">4℃-9℃</td>
+                        <td><span class="season-tag autumn">秋</span>立秋</td>
+                        <td class="temp-range">20℃-25℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag spring">春</span>雨水</td>
+                        <td class="temp-range">4℃-9℃</td>
+                        <td><span class="season-tag autumn">秋</span>处暑</td>
+                        <td class="temp-range">18℃-23℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag spring">春</span>惊蛰</td>
+                        <td class="temp-range">7℃-11℃</td>
+                        <td><span class="season-tag autumn">秋</span>白露</td>
+                        <td class="temp-range">15℃-20℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag spring">春</span>春分</td>
+                        <td class="temp-range">10℃-15℃</td>
+                        <td><span class="season-tag autumn">秋</span>秋分</td>
+                        <td class="temp-range">15℃-20℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag spring">春</span>清明</td>
+                        <td class="temp-range">12℃-17℃</td>
+                        <td><span class="season-tag autumn">秋</span>寒露</td>
+                        <td class="temp-range">12℃-17℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag spring">春</span>谷雨</td>
+                        <td class="temp-range">15℃-20℃</td>
+                        <td><span class="season-tag autumn">秋</span>霜降</td>
+                        <td class="temp-range">0℃-10℃</td>
+                    </tr>
+                    <!-- 夏季节气 -->
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>立夏</td>
+                        <td class="temp-range">15℃-20℃</td>
+                        <td><span class="season-tag winter">冬</span>立冬</td>
+                        <td class="temp-range">5℃-10℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>小满</td>
+                        <td class="temp-range">18℃-23℃</td>
+                        <td><span class="season-tag winter">冬</span>小雪</td>
+                        <td class="temp-range">3℃-8℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>芒种</td>
+                        <td class="temp-range">20℃-25℃</td>
+                        <td><span class="season-tag winter">冬</span>大雪</td>
+                        <td class="temp-range">0℃-5℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>夏至</td>
+                        <td class="temp-range">22℃-28℃</td>
+                        <td><span class="season-tag winter">冬</span>冬至</td>
+                        <td class="temp-range">-2℃-3℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>小暑</td>
+                        <td class="temp-range">25℃-30℃</td>
+                        <td><span class="season-tag winter">冬</span>小寒</td>
+                        <td class="temp-range">-5℃-0℃</td>
+                    </tr>
+                    <tr>
+                        <td><span class="season-tag summer">夏</span>大暑</td>
+                        <td class="temp-range">25℃-32℃</td>
+                        <td><span class="season-tag winter">冬</span>大寒</td>
+                        <td class="temp-range">-2℃-3℃</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+       document.querySelectorAll('.temp-range').forEach(td => {
+    const [min, max] = td.textContent.replace('℃','').split('-').map(Number)
+        td.style.color = '#82c1f4';
+})
+    </script>
+</body>
+</html>

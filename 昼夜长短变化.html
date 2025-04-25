@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>二十四节气昼夜变化</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --axis-color: #666;
+            --tooltip-bg: rgba(0, 0, 0, 0.8);
+            --tooltip-text: #fff;
+            --button-bg: #b4eda3;
+            --button-hover: #93aadc;
+            --select-bg: white;
+            --select-border: #d1d5db;
+            --chart-day: #91c4e3; 
+            --chart-night: #4f5052; 
+        }
+
+        [data-theme="dark"] {
+            --bg-color: rgba(30, 30, 36, 0.95);
+            --text-color: #e0e0e0;
+            --container-bg: rgba(30, 30, 36, 0.95);
+            --axis-color: #a0a0a0;
+            --tooltip-bg: rgba(255, 255, 255, 0.9);
+            --tooltip-text: #222;
+            --button-bg: #697a96;
+            --button-hover: #2d3748;
+            --select-bg: #52617a;
+            --select-border: #4a5568;
+            --chart-day: #edbd6b;
+            --chart-night: #9293e8;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Noto Serif SC', serif;
+            background-image: url('images/背景2.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 30px;
+            color: var(--text-color);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+            z-index: 1;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+        }
+
+            #container {
+        background: var(--container-bg);
+        backdrop-filter: blur(8px);
+        width: 95%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 使内容居中 */
+    }
+
+        /* 修改图表容器样式 */
+        #chart {
+            height: 550px;
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background: var(--tooltip-bg);
+            color: var(--tooltip-text);
+            border-radius: 6px;
+            pointer-events: none;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            line-height: 1.5;
+            max-width: 220px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+            width: 100%;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: var(--button-bg);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+            transform: translateY(-1px);
+        }
+
+        select {
+            padding: 9px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--select-border);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            background: var(--select-bg);
+            color: var(--text-color);
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .season-filter {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .hidden {
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(45deg, #64ffda, #ffa002);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        .term-label {
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Merriweather', serif;
+            transition: fill 0.3s ease;
+            cursor: pointer;
+        }
+
+        .term-label:hover {
+            font-weight: 800;
+            fill: #ff6b6b;
+        }
+
+        .axis text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            fill: var(--axis-color);
+            transition: fill 0.3s ease;
+        }
+
+        .axis-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            fill: var(--axis-color);
+            font-weight: 500;
+            transition: fill 0.3s ease;
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            top: 75px;
+            right: 240px;
+            z-index: 1000;
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--button-hover);
+            transform: scale(1.1);
+        }
+
+        path.layer, circle.highlight, text.term-label {
+            transition: fill 0.3s ease, stroke 0.3s ease;
+        }
+        .subtitle {
+            font-family: 'Noto Serif SC', serif;
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            font-size: 1em;
+            opacity: 0.8;
+        }
+        
+        .data-source {
+            position: absolute;
+            right: 40px;
+            bottom: 20px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.8em;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        .top-left-link {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            color: rgb(237, 201, 128);
+            font-size: 1em;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 1000;
+        }
+
+            .top-right-link {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            color: rgb(237, 201, 128);
+            font-size: 1em;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .top-left-link:hover,
+        .top-right-link:hover {
+            color: #91e291;
+            transform: translateY(-2px);
+        }
+        .icon {
+        font-size: 1.4em;
+        }
+        .top-left-link .icon,
+        .top-right-link .icon {
+            transition: transform 0.3s ease;
+        }
+
+        .top-left-link:hover .icon {
+            transform: translateX(-5px);
+        }
+
+        .top-right-link:hover .icon {
+            transform: translateX(5px);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .top-left-link,
+            .top-right-link {
+                padding: 8px;
+                top: 15px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 50%;
+            }
+            .top-left-link { left: 10px; }
+            .top-right-link { right: 10px; }
+            .icon { font-size: 1.2em; }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="历史渊源.html" class="top-left-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="SPRING.html" class="top-right-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <span id="themeIcon">☀️</span>
+    </button>
+    <div id="container">
+        <h1>二十四节气昼夜变化</h1>
+        <div class="subtitle">（以黄河中下游地区为例）</div>
+        <div class="controls">
+            <div class="season-filter">
+                <button id="play-btn">▶ 播放动画</button>
+                <select id="season-select">
+                    <option value="all">全部季节</option>
+                    <option value="spring">春季</option>
+                    <option value="summer">夏季</option>
+                    <option value="autumn">秋季</option>
+                    <option value="winter">冬季</option>
+                </select>
+            </div>
+            <div id="legend"></div>
+        </div>
+
+        <div id="chart"></div>
+        <div class="data-source">数据来源：中国气象局</div>
+    </div>
+
+    <script>
+        // 节气数据
+        const solarTermsData = [
+            { name: "立春", date: "2月4日", day: 10.7, night: 13.3, season: "spring" },
+            { name: "雨水", date: "2月19日", day: 11.0, night: 13.0, season: "spring" },
+            { name: "惊蛰", date: "3月6日", day: 11.3, night: 12.7, season: "spring" },
+            { name: "春分", date: "3月21日", day: 12.0, night: 12.0, season: "spring" },
+            { name: "清明", date: "4月5日", day: 12.7, night: 11.3, season: "spring" },
+            { name: "谷雨", date: "4月20日", day: 13.0, night: 11.0, season: "spring" },
+            { name: "立夏", date: "5月6日", day: 13.4, night: 10.6, season: "summer" },
+            { name: "小满", date: "5月21日", day: 13.7, night: 10.3, season: "summer" },
+            { name: "芒种", date: "6月6日", day: 14.0, night: 10.0, season: "summer" },
+            { name: "夏至", date: "6月21日", day: 14.0, night: 10.0, season: "summer" },
+            { name: "小暑", date: "7月7日", day: 13.7, night: 10.3, season: "summer" },
+            { name: "大暑", date: "7月23日", day: 13.3, night: 10.7, season: "summer" },
+            { name: "立秋", date: "8月8日", day: 13.0, night: 11.0, season: "autumn" },
+            { name: "处暑", date: "8月23日", day: 12.7, night: 11.3, season: "autumn" },
+            { name: "白露", date: "9月8日", day: 12.3, night: 11.7, season: "autumn" },
+            { name: "秋分", date: "9月23日", day: 12.0, night: 12.0, season: "autumn" },
+            { name: "寒露", date: "10月8日", day: 11.7, night: 12.3, season: "autumn" },
+            { name: "霜降", date: "10月24日", day: 11.3, night: 12.7, season: "autumn" },
+            { name: "立冬", date: "11月7日", day: 11.0, night: 13.0, season: "winter" },
+            { name: "小雪", date: "11月22日", day: 10.7, night: 13.3, season: "winter" },
+            { name: "大雪", date: "12月7日", day: 10.3, night: 13.7, season: "winter" },
+            { name: "冬至", date: "12月22日", day: 10.0, night: 14.0, season: "winter" },
+            { name: "小寒", date: "1月6日", day: 10.3, night: 13.7, season: "winter" },
+            { name: "大寒", date: "1月20日", day: 10.7, night: 13.3, season: "winter" }
+        ];
+
+        // 季节颜色映射
+        const seasonColors = {
+            spring: "#64ffda",
+            summer: "#fb7185",
+            autumn: "#ffa002",
+            winter: "#6c5ce7"
+        };
+
+        const margin = { top: 50, right: 50, bottom: 100, left: 70 };
+        const width = 1000 - margin.left - margin.right;
+        const height = 600 - margin.top - margin.bottom;
+
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+            .attr("preserveAspectRatio", "xMidYMid meet")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+
+        const x = d3.scaleBand()
+            .domain(solarTermsData.map(d => d.name))
+            .range([0, width])
+            .padding(0.2);
+
+        const y = d3.scaleLinear()
+            .domain([0, 24])
+            .range([height, 0]);
+            
+
+        const color = d3.scaleOrdinal()
+            .domain(["day", "night"])
+            .range(["var(--chart-day)", "var(--chart-night)"]);
+
+        let currentData = solarTermsData;
+        let hiddenLayers = [];
+        let isPlaying = false;
+        let playInterval;
+        const highlightTerms = ["春分", "夏至", "秋分", "冬至"];
+
+        const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const htmlElement = document.documentElement;
+
+
+const savedTheme = localStorage.getItem('theme') || 
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+
+if (savedTheme === 'dark') {
+    htmlElement.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '🌙';
+} else {
+    htmlElement.removeAttribute('data-theme');
+    themeIcon.textContent = '☀️';
+}
+
+
+themeToggle.addEventListener('click', () => {
+    if (htmlElement.getAttribute('data-theme')) {
+        htmlElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        themeIcon.textContent = '☀️';
+    } else {
+        htmlElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeIcon.textContent = '🌙';
+    }
+    
+
+    updateChart();
+});
+
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    const newTheme = e.matches ? 'dark' : 'light';
+    if (newTheme === 'dark') {
+        htmlElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '🌙';
+    } else {
+        htmlElement.removeAttribute('data-theme');
+        themeIcon.textContent = '☀️';
+    }
+    localStorage.setItem('theme', newTheme);
+    updateChart();
+});
+        function updateChart(data = currentData) {
+            svg.selectAll("*").remove();
+
+
+            const stackedData = d3.stack()
+                .keys(["day", "night"])
+                .order(d3.stackOrderNone)
+                .offset(d3.stackOffsetNone)(data);
+
+            svg.selectAll(".layer")
+                .data(stackedData)
+                .enter()
+                .append("path")
+                .attr("class", d => `layer ${d.key}`)
+                .attr("d", d3.area()
+                    .x(d => x(d.data.name) + x.bandwidth() / 2)
+                    .y0(d => y(d[0]))
+                    .y1(d => y(d[1]))
+                    .curve(d3.curveCatmullRom.alpha(0.5))
+                )
+                .style("fill", d => color(d.key))
+                .style("opacity", d => hiddenLayers.includes(d.key) ? 0.3 : 0.8)
+                .style("stroke", "white")
+                .style("stroke-width", 1)
+                .on("mouseover", function (event, d) {
+                    showTooltip(event, d);
+                    d3.select(this).style("opacity", 1).style("stroke", "#333");
+                })
+                .on("mouseout", function (event, d) {
+                    hideTooltip();
+                    d3.select(this).style("opacity", hiddenLayers.includes(d.key) ? 0.3 : 0.8)
+                        .style("stroke", "white");
+                });
+
+            // 修改节气名称的鼠标事件
+            svg.selectAll(".term-label")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("class", "term-label")
+                .attr("x", d => x(d.name) + x.bandwidth() / 2)
+                .attr("y", height + 30)
+                .attr("text-anchor", "middle")
+                .text(d => d.name)
+                .style("fill", d => seasonColors[d.season])
+                .style("font-weight", "bold")
+                .on("mouseover", function(event, d) {
+                    // 高亮当前节气名称
+                    d3.select(this).style("font-weight", "800").style("fill", "#ff6b6b");
+                    
+                    // 显示工具提示
+                    const tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+                    
+                    const html = `
+                        <strong>${d.name}</strong>（${d.date}）<br>
+                        <span style="color:${seasonColors[d.season]}">${getSeasonName(d.season)}</span><br>
+                        白昼: ${d.day.toFixed(1)}小时 | 黑夜: ${d.night.toFixed(1)}小时
+                    `;
+                    
+                    tooltip.html(html)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                })
+                .on("mouseout", function() {
+                    // 恢复默认样式
+                    d3.select(this).style("font-weight", "bold").style("fill", d => seasonColors[d.season]);
+                    
+                    // 隐藏工具提示
+                    d3.select(".tooltip").remove();
+                });
+
+
+            const seasonGroups = d3.groups(data, d => d.season);
+            seasonGroups.forEach(([season, terms]) => {
+                if (terms.length === 0) return;
+
+                svg.append("rect")
+                    .attr("x", x(terms[0].name))
+                    .attr("y", height + 40)
+                    .attr("width", x(terms[terms.length - 1].name) - x(terms[0].name) + x.bandwidth())
+                    .attr("height", 15)
+                    .attr("fill", seasonColors[season])
+                    .attr("opacity", 0.2)
+                    .attr("rx", 5);
+            });
+
+
+            svg.append("g")
+                .call(d3.axisLeft(y).ticks(6))
+                .append("text")
+                .attr("y", -15)
+                .attr("x", -height / 2)
+                .attr("transform", "rotate(-90)")
+                .attr("fill", "var(--text-color)")
+                .text("时长（小时）");
+
+
+            svg.selectAll(".highlight")
+                .data(data.filter(d => highlightTerms.includes(d.name)))
+                .enter()
+                .append("circle")
+                .attr("class", "highlight")
+                .attr("cx", d => x(d.name) + x.bandwidth() / 2)
+                .attr("cy", d => y(d.day) - 10)
+                .attr("r", 6)
+                .attr("fill", d => seasonColors[d.season])
+                .attr("stroke", "white")
+                .attr("stroke-width", 2)
+                .on("mouseover", function (event, d) {
+                    showTooltip(event, {
+                        key: "highlight",
+                        data: d
+                    });
+                })
+                .on("mouseout", hideTooltip);
+        }
+
+        function showTooltip(event, d) {
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            let html = "";
+            if (d.key === "highlight") {
+                const term = d.data;
+                html = `
+                    <strong>${term.name}</strong>（${term.date}）<br>
+                    <span style="color:${seasonColors[term.season]}">${getSeasonName(term.season)}</span><br>
+                    白昼: ${term.day.toFixed(1)}小时 | 黑夜: ${term.night.toFixed(1)}小时
+                `;
+            } else {
+                html = `
+                    <strong>${d.data.name}</strong><br>
+                    ${d.key === "day" ? "白昼" : "黑夜"}: ${d.data[d.key].toFixed(1)}小时
+                `;
+            }
+
+            tooltip.html(html)
+                .style("left", (event.pageX + 15) + "px")
+                .style("top", (event.pageY - 30) + "px")
+                .transition()
+                .duration(200)
+                .style("opacity", 1);
+        }
+
+        function hideTooltip() {
+            d3.select(".tooltip").remove();
+        }
+
+        d3.select("#season-select").on("change", function () {
+            const season = this.value;
+            let newData;
+            if (season === "all") {
+                newData = solarTermsData;
+            } else {
+                newData = solarTermsData.filter(d => d.season === season);
+            }
+            currentData = newData;
+            updateChart();
+
+            const layers = svg.selectAll(".layer");
+            const termLabels = svg.selectAll(".term-label");
+            const seasonRects = svg.selectAll("rect");
+            const highlights = svg.selectAll(".highlight");
+
+            layers.transition()
+                .duration(500)
+                .attr("d", function (d) {
+                    const filteredData = newData;
+                    const stackedData = d3.stack()
+                        .keys(["day", "night"])
+                        .order(d3.stackOrderNone)
+                        .offset(d3.stackOffsetNone)(filteredData);
+                    const layerData = stackedData.find(l => l.key === d.key);
+                    return d3.area()
+                        .x(d => x(d.data.name) + x.bandwidth() / 2)
+                        .y0(d => y(d[0]))
+                        .y1(d => y(d[1]))
+                        .curve(d3.curveCatmullRom.alpha(0.5))(layerData);
+                })
+                .style("opacity", function (d) {
+                    return hiddenLayers.includes(d.key) ? 0.3 : 0.8;
+                });
+
+            termLabels.data(newData)
+                .join("text")
+                .attr("class", "term-label")
+                .transition()
+                .duration(500)
+                .attr("x", d => x(d.name) + x.bandwidth() / 2)
+                .attr("y", height + 30)
+                .text(d => d.name)
+                .style("fill", d => seasonColors[d.season])
+                .style("font-weight", "bold")
+                .on("mouseover", function(event, d) {
+                    d3.select(this).style("font-weight", "800").style("fill", "#ff6b6b");
+                    
+                    const tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+                    
+                    const html = `
+                        <strong>${d.name}</strong>（${d.date}）<br>
+                        <span style="color:${seasonColors[d.season]}">${getSeasonName(d.season)}</span><br>
+                        白昼: ${d.day.toFixed(1)}小时 | 黑夜: ${d.night.toFixed(1)}小时
+                    `;
+                    
+                    tooltip.html(html)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                })
+                .on("mouseout", function() {
+                    d3.select(this).style("font-weight", "bold").style("fill", d => seasonColors[d.season]);
+                    d3.select(".tooltip").remove();
+                });
+
+            const newSeasonGroups = d3.groups(newData, d => d.season);
+            seasonRects.data(newSeasonGroups)
+                .join("rect")
+                .transition()
+                .duration(500)
+                .attr("x", d => x(d[1][0].name))
+                .attr("y", height + 40)
+                .attr("width", d => x(d[1][d[1].length - 1].name) - x(d[1][0].name) + x.bandwidth())
+                .attr("height", 15)
+                .attr("fill", d => seasonColors[d[0]])
+                .attr("opacity", 0.2)
+                .attr("rx", 5);
+
+            highlights.data(newData.filter(d => highlightTerms.includes(d.name)))
+                .join("circle")
+                .attr("class", "highlight")
+                .transition()
+                .duration(500)
+                .attr("cx", d => x(d.name) + x.bandwidth() / 2)
+                .attr("cy", d => y(d.day) - 10)
+                .attr("r", 6)
+                .attr("fill", d => seasonColors[d.season])
+                .attr("stroke", "white")
+                .attr("stroke-width", 2);
+
+            currentData = newData;
+        });
+
+
+        function initLegend() {
+            const legendData = [
+                { label: "白昼", color: "var(--chart-day)", key: "day" },
+                { label: "黑夜", color: "var(--chart-night)", key: "night" }
+            ];
+
+            const legend = d3.select("#legend")
+                .selectAll(".legend-item")
+                .data(legendData)
+                .enter()
+                .append("div")
+                .attr("class", "legend-item")
+                .html(d => `
+                    <div class="legend-color" style="background:${d.color}"></div>
+                    <span>${d.label}</span>
+                `)
+                .on("click", function (event, d) {
+                    const index = hiddenLayers.indexOf(d.key);
+                    if (index === -1) {
+                        hiddenLayers.push(d.key);
+                    } else {
+                        hiddenLayers.splice(index, 1);
+                    }
+                    updateChart();
+                    d3.select(this).classed("hidden", index === -1);
+                });
+        }
+
+        // 动画播放
+        function playAnimation() {
+            if (isPlaying) {
+                clearInterval(playInterval);
+                isPlaying = false;
+                d3.select("#play-btn").text("▶ 播放动画");
+                return;
+            }
+            
+            isPlaying = true;
+            d3.select("#play-btn").text("❚❚ 停止动画");
+
+            let i = 0;
+            playInterval = setInterval(() => {
+                currentData = solarTermsData.slice(0, i + 1);
+                updateChart();
+                i = (i + 1) % solarTermsData.length;
+            }, 500);
+        }
+
+        d3.select("#play-btn").on("click", playAnimation);
+
+
+        function getSeasonName(season) {
+            const names = {
+                spring: "春季",
+                summer: "夏季",
+                autumn: "秋季",
+                winter: "冬季"
+            };
+            return names[season];
+        }
+
+        // 初始化
+        updateChart();
+        initLegend();
+    </script>
+</body>
+
+</html>

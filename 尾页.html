@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二十四节气 · 时空韵律</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      font-family: 'Noto Serif SC', -apple-system, sans-serif;
+      padding: 2rem;
+      background: url('images/背景2.jpg') repeat;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      flex: 1;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: white;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .text-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* 内容向上对齐 */
+      height: 100%;
+    }
+    
+    .image-box {
+      padding: 0;
+    }
+    
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem; /* 减小标题与正文间距 */
+      color: #333;
+    }
+    
+    p {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.5;
+      text-align: justify; /* 文字两端对齐 */
+      text-justify: inter-character; /* 更好的中文两端对齐 */
+      margin-top: 0.5rem;
+      flex-grow: 1; /* 让文字部分占据剩余空间 */
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+    
+    .gradient-text {
+      background-image: linear-gradient(135deg, #6b8cff 0%, #e2ae2b 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+      font-size: 2.8rem; 
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .section-title {
+      position: relative;
+      padding: 3rem 0;
+      margin: 2rem 0;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 300px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #6b8cff, transparent);
+      transform: translateX(-50%);
+    }
+
+    .icon-frame {
+      display: grid;
+      place-items: center;
+      width: 45px;
+      height: 45px; 
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      margin: 0.25rem auto; /* 减小图标上下间距 */
+    }
+    .top-left-link {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        color: rgb(237, 201, 128);
+        text-decoration: none;
+        transition: all 0.3s ease;
+  }
+    .top-left-link .icon{
+        font-size: 1.4em;
+        transition: transform 0.3s ease;
+    }
+
+    .top-left-link:hover .icon {
+        transform: translateX(-5px);
+    }
+
+    .top-left-link:hover{
+        color: #91e291;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .top-left-link,
+        .top-right-link {
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(3px);
+        }
+        .top-left-link { left: 10px; }
+        .icon { font-size: 1.2em; }
+    }
+    @media (max-width: 1024px) {
+      .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gradient-text {
+        font-size: 2.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+      .gradient-text {
+        font-size: 2rem;
+      }
+    }
+    .footer-box {
+    background: linear-gradient(
+        135deg,
+        rgba(210, 245, 193, 0.7),  /* 浅青色 70%透明度 */
+        rgba(208, 236, 234, 0.4)  /* 浅薄荷色 40%透明度 */
+    );
+    backdrop-filter: blur(8px);    /* 增强模糊效果 */
+    border-radius: 12px 12px 0 0;
+    padding: 1.2rem 2rem;
+    margin-top: auto;
+    text-align: center;
+    box-shadow: 0 -2px 15px rgba(125, 200, 195, 0.2); /* 调整阴影颜色匹配 */
+    width: 100%;
+    font-family: 'Noto Serif SC', serif;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 改为白色半透明边框 */
+    position: sticky;
+    bottom: 0;
+    /* 添加渐变光晕效果 */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 50% 100%,
+            rgba(180, 240, 240, 0.3),
+            transparent 60%
+        );
+        pointer-events: none;
+    }
+}
+  </style>
+</head>
+
+<body>
+  <a href="问答.html" class="top-left-link">
+    <span class="icon fas fa-arrow-left"></span>
+</a>
+  <a href="主界面.html" 
+   class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-lg hover:shadow-xl transition-all duration-300 group"
+   style="color: #92bfec;"> <!-- 紫色600 -->
+  <i class="fas fa-home text-2xl transition-colors duration-300 group-hover:text-blue-400"></i>
+  <span class="sr-only">返回主界面</span>
+</a>
+  <div class="container">
+    <section class="wisdom-section">
+      <h2 class="section-title">
+        <span class="gradient-text">✨二十四节气意义——时空韵律的智慧✨</span>
+      </h2>
+
+      <!-- 第一行：文字、图片交替 -->
+      <div class="grid-container">
+        <!-- 农业指导 -->
+        <div class="card text-box">
+          <div class="icon-frame">
+            <i class="fas fa-tractor text-3xl text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-center text-blue-600">指导农业生产</h3>
+          <p class="text-gray-700 leading-relaxed">二十四节气精准反映自然节律，对农业意义重大。各节气对应特定农事，如谷雨适合播种移苗，芒种需抢种有芒作物。农民依此安排耕种收获，顺应天时，有效提高农作物产量与质量。</p>
+        </div>
+        
+        <!-- 气候变化图片 -->
+        <div class="card image-box">
+          <img src="images/气候.jpg">
+        </div>
+        
+        <!-- 文化传承 -->
+        <div class="card text-box">
+          <div class="icon-frame">
+            <i class="fas fa-monument text-3xl text-amber-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-center text-blue-600">传承文化传统</h3>
+          <p class="text-gray-700 leading-relaxed">作为中华文化重要部分，节气承载丰富内涵与记忆，体现天人合一理念。传统节日民俗与之紧密相连，如清明扫墓踏青、冬至吃饺子汤圆，这些习俗传承弘扬了优秀传统文化。</p>
+        </div>
+        
+        <!-- 日常生活图片 -->
+        <div class="card image-box">
+          <img src="images/日常生活.jpg">
+        </div>
+        
+        <!-- 国际影响 -->
+        <div class="card text-box">
+          <div class="icon-frame">
+            <i class="fas fa-globe-asia text-3xl text-purple-500"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-center text-blue-600">国际影响力</h3>
+          <p class="text-gray-700 leading-relaxed">入选联合国非遗后影响持续扩大，全球博物馆举办主题展览传播东方智慧。日本发展出"大和二十四节"，韩国融合农耕文化，越南等东南亚国家借鉴农事指导，成为跨文化交流的重要纽带。</p>
+        </div>
+      </div>
+      
+      <!-- 第二行：图片、文字交替 -->
+      <div class="grid-container">
+        <!-- 农业图片 -->
+        <div class="card image-box">
+          <img src="images/农业.jpg">
+        </div>
+        
+        <!-- 气候变化 -->
+        <div class="card text-box">
+          <div class="icon-frame">
+            <i class="fas fa-cloud-sun-rain text-3xl text-blue-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-center text-blue-600">反映气候变化</h3>
+          <p class="text-gray-700 leading-relaxed">节气划分时段，呈现独特气候。小暑、大暑酷热多雨，需防暑防涝；寒露、霜降降温有霜，作物成熟，人们添衣防病。观察节气变化，可预判天气趋势，帮助我们应对不同气候。</p>
+        </div>
+        
+        <!-- 文化图片 -->
+        <div class="card image-box">
+          <img src="images/文化.jpg">
+        </div>
+        
+        <!-- 日常生活 -->
+        <div class="card text-box">
+          <div class="icon-frame">
+            <i class="fas fa-utensils text-3xl text-red-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-center text-blue-600">影响日常生活</h3>
+          <p class="text-gray-700 leading-relaxed">节气渗透饮食、作息与养生。春季宜食果蔬、早睡早起多活动；冬季早睡晚起、适当进补。同时，还影响衣着、住房选择，指导人们依季节调整生活，适应气候，保障健康。</p>
+        </div>
+        
+        <!-- 国际图片 -->
+        <div class="card image-box">
+          <img src="images/国际影响.jpg">
+        </div>
+      </div>
+    </section>
+    <div class="footer-box">
+      <div class="footer-text">
+        ✨立足当下，二十四节气仍散发着蓬勃生机。期待未来，它能在全球文化舞台上绽放更绚烂光彩，照亮人类与自然和谐共生之路✨
+      </div>
+  </div>
+</body>
+
+</html>
