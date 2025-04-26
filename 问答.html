@@ -29,7 +29,7 @@
         
         body {
             font-family: "SimSun", "宋体", serif; 
-            background: url('背景2.jpg') no-repeat center center fixed;
+            background: url('images/背景2.jpg') no-repeat center center fixed;
             background-size: cover;
             color: var(--dark-color);
             line-height: 1.6;
@@ -162,6 +162,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-bottom: 20px;
+            overflow: visible;
         }
         
         @media (max-width: 768px) {
@@ -181,6 +182,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+            overflow: visible;
+            justify-content: space-between;
+            padding-right: 40px;
         }
         
         .option:hover {
@@ -197,6 +202,18 @@
             box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
         
+        .option.correct {
+            background-color: #e6f7e6;
+            border-color: var(--success-color);
+            animation: pulseCorrect 0.5s ease;
+        }
+        
+        .option.incorrect {
+            background-color: #fce8e8;
+            border-color: var(--error-color);
+            animation: shake 0.5s ease;
+        }
+        
         .option-number {
             background-color: rgba(255, 255, 255, 0.2);
             width: 25px;
@@ -206,6 +223,40 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+        }
+        
+        .option-feedback {
+            position: static;
+            margin-left: auto;
+            transform-origin: right center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease;
+        }
+        
+        .option.correct .option-feedback {
+            color: var(--success-color);
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .option.incorrect .option-feedback {
+            color: var(--error-color);
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        @keyframes pulseCorrect {
+            0% { transform: translateY(-3px) scale(1); }
+            50% { transform: translateY(-3px) scale(1.05); }
+            100% { transform: translateY(-3px) scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateY(-3px) translateX(0); }
+            20%, 60% { transform: translateY(-3px) translateX(-5px); }
+            40%, 80% { transform: translateY(-3px) translateX(5px); }
         }
         
         .controls {
@@ -548,11 +599,6 @@
         </div>
     </div>
 
-    <!-- 添加音效元素 -->
-    <audio id="correctSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
-    <audio id="wrongSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
-    <audio id="completeSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
-
     <script>
         // 增强题库
         const questions = [
@@ -669,12 +715,6 @@
         const categoryTagElement = document.getElementById("category-tag");
         const resultMessageElement = document.getElementById("result-message");
 
-        
-        // 音效元素
-        const correctSound = document.getElementById("correctSound");
-        const wrongSound = document.getElementById("wrongSound");
-        const completeSound = document.getElementById("completeSound");
-
         // 格式化时间
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -700,46 +740,55 @@
         }
 
         // 加载问题
-        function loadQuestion() {
-            const question = questions[currentQuestion];
-            questionElement.textContent = question.question;
-            
-            optionsElement.innerHTML = "";
-            question.options.forEach((option, index) => {
-                const optionElement = document.createElement("div");
-                optionElement.classList.add("option");
-                
-                const optionNumber = document.createElement("div");
-                optionNumber.classList.add("option-number");
-                optionNumber.textContent = index + 1;
-                
-                const optionText = document.createElement("div");
-                optionText.textContent = option;
-                
-                optionElement.appendChild(optionNumber);
-                optionElement.appendChild(optionText);
-                optionElement.addEventListener("click", () => selectOption(index));
-                optionsElement.appendChild(optionElement);
-            });
-            
-            progressTextElement.textContent = `问题 ${currentQuestion + 1}/${questions.length}`;
-            progressFillElement.style.width = `${(currentQuestion / questions.length) * 100}%`;
-            
-            nextBtn.textContent = currentQuestion === questions.length - 1 ? "完成测试" : "下一题";
-            prevBtn.disabled = currentQuestion === 0;
-            
-            // 更新分类标签
-            categoryTagElement.textContent = question.category;
-            
-            // 重置提示和解析
-            hintElement.style.display = "none";
-            explanationElement.style.display = "none";
-            hintTextElement.textContent = question.hint;
-            explanationTextElement.textContent = question.explanation;
-            
-            answered = false;
-            selectedOption = null;
-        }
+ // 加载问题
+function loadQuestion() {
+    const question = questions[currentQuestion];
+    questionElement.textContent = question.question;
+    
+    optionsElement.innerHTML = "";
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement("div");
+        optionElement.classList.add("option");
+        
+        const optionNumber = document.createElement("div");
+        optionNumber.classList.add("option-number");
+        optionNumber.textContent = index + 1;
+        
+        const optionText = document.createElement("div");
+        optionText.textContent = option;
+        
+        // 添加反馈图标
+        const feedbackIcon = document.createElement("div");
+        feedbackIcon.classList.add("option-feedback");
+        feedbackIcon.innerHTML = index === question.answer 
+            ? '<i class="fas fa-check"></i>' 
+            : '<i class="fas fa-times"></i>';
+        
+        optionElement.appendChild(optionNumber);
+        optionElement.appendChild(optionText);
+        optionElement.appendChild(feedbackIcon);
+        optionElement.addEventListener("click", () => selectOption(index));
+        optionsElement.appendChild(optionElement);
+    });
+    
+    progressTextElement.textContent = `问题 ${currentQuestion + 1}/${questions.length}`;
+    progressFillElement.style.width = `${(currentQuestion / questions.length) * 100}%`;
+    
+    nextBtn.textContent = currentQuestion === questions.length - 1 ? "完成测试" : "下一题";
+    prevBtn.disabled = currentQuestion === 0;
+    
+    // 更新分类标签
+    categoryTagElement.textContent = question.category;
+    
+    // 重置提示和解析
+    hintElement.style.display = "none";
+    explanationElement.style.display = "none";
+    hintTextElement.textContent = question.hint;
+    explanationTextElement.textContent = question.explanation;
+    
+    answered = false;
+    selectedOption = null;
+}
 
         // 选择选项
         function selectOption(index) {
@@ -753,74 +802,64 @@
 
         // 检查答案
         // 检查答案
-    function checkAnswer() {
-        if (selectedOption === null) return false;
-        
-        answered = true;
-        const options = document.querySelectorAll(".option");
-        const correctIndex = questions[currentQuestion].answer;
-
-        // 播放音效
-        if (selectedOption === correctIndex) {
-            correctSound.currentTime = 0; // 重置音频到开始
-            correctSound.play();
-        } else {
-            wrongSound.currentTime = 0; // 重置音频到开始
-            wrongSound.play();
-        }
-        
-        // 添加正确的动画类
-        options.forEach((option, index) => {
-            if (index === correctIndex) {
-                option.classList.add("correct");
-                // 强制应用最终状态
-                setTimeout(() => {
-                    option.style.backgroundColor = "var(--success-color)";
-                    option.style.color = "white";
-                }, 800);
-            } else if (index === selectedOption && index!== correctIndex) {
-                option.classList.add("incorrect");
-                console.log("已为错误选项添加 incorrect 类"); // 添加调试语句
-                // 强制应用最终状态
-                setTimeout(() => {
-                    option.style.backgroundColor = "var(--error-color)";
-                    option.style.color = "white";
-                }, 800);
-            }
-        });
-        
-        explanationElement.style.display = "block";
-        
-        if (selectedOption === correctIndex) {
-            score++;
-            scoreElement.textContent = score;
-        }
-        
-        return true;
+function checkAnswer() {
+    if (selectedOption === null) {
+        // 确保解析不会显示
+        explanationElement.style.display = "none";
+        return false;
     }
-
+    
+    answered = true;
+    const options = document.querySelectorAll(".option");
+    const correctIndex = questions[currentQuestion].answer;
+    
+    // 清除旧状态
+    options.forEach(option => {
+        option.classList.remove("correct", "incorrect");
+    });
+    
+    // 设置新状态
+    options.forEach((option, index) => {
+        if (index === correctIndex) {
+            option.classList.add("correct");
+        } else if (index === selectedOption) {
+            option.classList.add("incorrect");
+        }
+    });
+    
+    // 延迟显示解析
+    setTimeout(() => {
+        explanationElement.style.display = "block";
+    }, 500);
+    
+    if (selectedOption === correctIndex) {
+        score++;
+        scoreElement.textContent = score;
+    }
+    
+    return true;
+}
+        // 下一题
         // 下一题
         nextBtn.addEventListener("click", () => {
-            if (!answered) {
-                if (!checkAnswer()) {
-                    alert("请选择一个答案!");
-                    return;
-                }
-            }
-            
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                loadQuestion();
-            } else {
-                showResult();
-            }
-        });
-
-        // 上一题
-        prevBtn.addEventListener("click", () => {
-            currentQuestion--;
+    if (!answered) {
+        const answerChecked = checkAnswer();
+        if (!answerChecked) {
+            alert("请选择一个答案!");
+            return;
+        }
+    }
+    // 重置解析显示
+    explanationElement.style.display = "none";
+    setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+            currentQuestion++;
             loadQuestion();
-        });
+        } else {
+            showResult();
+        }
+    }, 500); // 确保解析有足够时间隐藏
+});
 
         // 显示提示
         hintBtn.addEventListener("click", () => {
@@ -840,10 +879,6 @@
             
             finalScoreElement.textContent = score;
             finalTimeElement.textContent = formatTime(timeElapsed);
-            
-            // 播放完成音效
-            completeSound.currentTime = 0;
-            completeSound.play();
             
             // 根据得分显示不同的消息
             let message = "";
@@ -880,8 +915,6 @@
             
             loadQuestion();
         });
-
-        
 
         // 键盘导航
         document.addEventListener("keydown", (e) => {
