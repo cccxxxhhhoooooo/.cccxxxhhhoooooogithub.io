@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>四季节气养生指南 - 嵌套翻转卡片</title>
+    <style>
+        :root {
+            --spring-color: #4CAF50;
+            --summer-color: #F44336;
+            --autumn-color: #FF9800;
+            --winter-color: #2196F3;
+            --light-bg: #f9f9f9;
+            --card-bg: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: url('images/背景2.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        header {
+            text-align: center;
+            padding: 6px 0;
+            background: linear-gradient(135deg, #8ae78d, #60b0f1);
+            color: white;
+            border-radius:8px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .season-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 强制4列布局 */
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: stretch; /* 确保所有卡片高度一致 */
+        }
+        
+        .season-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .season-card.spring {
+            border-top: 6px solid var(--spring-color);
+        }
+        
+        .season-card.summer {
+            border-top: 6px solid var(--summer-color);
+        }
+        
+        .season-card.autumn {
+            border-top: 6px solid var(--autumn-color);
+        }
+        
+        .season-card.winter {
+            border-top: 6px solid var(--winter-color);
+        }
+        
+        .season-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .season-title {
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+        
+        .spring .season-title {
+            color: var(--spring-color);
+            border-color: var(--spring-color);
+        }
+        
+        .summer .season-title {
+            color: var(--summer-color);
+            border-color: var(--summer-color);
+        }
+        
+        .autumn .season-title {
+            color: var(--autumn-color);
+            border-color: var(--autumn-color);
+        }
+        
+        .winter .season-title {
+            color: var(--winter-color);
+            border-color: var(--winter-color);
+        }
+        
+        .solar-terms-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .flip-card {
+            background-color: transparent;
+            height: 150px;
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            padding: 12px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .flip-card-front {
+            background-color: var(--card-bg);
+            color: var(--text-dark);
+            border: 2px solid;
+        }
+        
+        .spring .flip-card-front {
+            border-color: var(--spring-color);
+        }
+        
+        .summer .flip-card-front {
+            border-color: var(--summer-color);
+        }
+        
+        .autumn .flip-card-front {
+            border-color: var(--autumn-color);
+        }
+        
+        .winter .flip-card-front {
+            border-color: var(--winter-color);
+        }
+        
+        .flip-card-back {
+            background-color: var(--card-bg);
+            color: var(--text-dark);
+            transform: rotateY(180deg);
+            overflow-y: hidden;
+            text-align: left;
+            border: 2px solid #eee;
+            padding: 10px; /* 调整内边距 */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 顶部对齐 */
+        }
+        
+        .flip-card h3 {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+        
+        .flip-card .date {
+            font-size: 0.8em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        .flip-card .brief {
+            font-size: 0.8em;
+            color: var(--text-light);
+        }
+        
+        .advice-category {
+            margin-top: 0; /* 移除顶部边距 */
+            overflow: hidden; /* 隐藏溢出 */
+            flex-grow: 1; /* 填充剩余空间 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直居中内容 */
+        }
+        
+        .flip-card-back h4 {
+            font-size: 0.9em;
+            margin: 5px 0;
+            color: inherit;
+        }
+        
+        .spring .flip-card-back h4 {
+            color: var(--spring-color);
+        }
+        
+        .summer .flip-card-back h4 {
+            color: var(--summer-color);
+        }
+        
+        .autumn .flip-card-back h4 {
+            color: var(--autumn-color);
+        }
+        
+        .winter .flip-card-back h4 {
+            color: var(--winter-color);
+        }
+        
+        .flip-card-back p {
+        font-size: 0.75em; 
+        margin: 2px 0;
+        line-height: 1.4; 
+        }
+          .flip-card-back h4 {
+        font-size: 0.85em; 
+        margin: 3px 0; 
+        text-align: center; 
+    }
+        .current-term {
+            position: relative;
+        }
+
+        .expert-info {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .expert-info h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+        
+        /* 自定义滚动条 */
+        .flip-card-back::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .flip-card-back::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+        
+        .flip-card-back::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .season-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .solar-terms-container {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .flip-card {
+                height: 130px;
+                
+            }
+        }
+        .data-source {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+    .data-source:hover {
+        opacity: 1;
+    }
+     .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+             font-size: 1.2rem;
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+             font-size: 1.2rem;
+        }
+
+        /* 统一图标动画效果 */
+        .top-right-link:hover .icon {
+            transform: translateX(5px);
+        }
+        .top-left-link:hover .icon {
+            transform: translateX(-5px);
+        }
+        /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+    </style>
+</head>
+<body>
+     <a href="WINTER.html" class="top-left-link icon-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="尾页.html" class="top-right-link icon-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <header>
+        <h1>二十四节气养生指南</h1>
+        <p class="subtitle">顺应天时 · 科学养生 · 健康生活</p>
+    </header>
+
+    <main>
+        <div class="season-container">
+            <!-- 春季 -->
+            <div class="season-card spring">
+                <h2 class="season-title">春季养生</h2>
+                <div class="solar-terms-container">
+                    <div class="flip-card current-term">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>立春</h3>
+                                <div class="date">2月3-5日</div>
+                                <div class="brief">阳气初生</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>立春养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 立春是二十四节气之首，要注重养肝</p>
+                                    <p><strong>饮食:</strong> 阳气初生，饮食适当增加气味辛甘温性的食物，如山药、春笋、韭菜等</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>雨水</h3>
+                                <div class="date">2月18-20日</div>
+                                <div class="brief">健脾祛湿</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>雨水养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 乍暖还寒，寒中又挟湿。养生重点是春捂，防湿邪，调脾胃</p>
+                                    <p><strong>饮食:</strong> 阳气初生，饮食适当增加气味辛甘温性的食物，如山药、春笋、韭菜等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>惊蛰</h3>
+                                <div class="date">3月5-7日</div>
+                                <div class="brief">清肝泻火</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>惊蛰养生</h4>
+                                <div class="advice-category">
+                                   <p><strong>养生要点:</strong>惊蛰到，春雷响，万物长。养生以舒展经络、调和气血为主</p>
+                                    <p><strong>饮食:</strong> 养肝可以吃些理气的果蔬，如茴香、芹菜、香椿、萝卜、柑橘等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>春分</h3>
+                                <div class="date">3月20-21日</div>
+                                <div class="brief">平衡阴阳</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>春分养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong>气候温和，雨水充沛，是调整阴阳平衡的保健时机</p>
+                                    <p><strong>饮食:</strong> 可多吃些春季里的时令蔬菜，包括韭菜、春笋、豆苗、菠菜等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>清明</h3>
+                                <div class="date">4月4-6日</div>
+                                <div class="brief">疏肝理气</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>清明养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 柔肝疏肝、调畅情志、健脾和中是养护重点</p>
+                                    <p><strong>饮食:</strong> 多吃柔肝养肺的食物，如荠菜、菠菜、山药等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>谷雨</h3>
+                                <div class="date">4月19-21日</div>
+                                <div class="brief">祛湿健脾</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>谷雨养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong>谷雨是春天最后一个节气，养生重在健脾除湿</p>
+                                    <p><strong>饮食:</strong> 增加利水渗湿的食物，如红豆、茯苓、冬瓜、薏米等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 夏季 -->
+            <div class="season-card summer">
+                <h2 class="season-title">夏季养生</h2>
+                <div class="solar-terms-container">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>立夏</h3>
+                                <div class="date">5月5-7日</div>
+                                <div class="brief">养心安神</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>立夏养生</h4>
+                                <div class="advice-category">
+                                   <p><strong>养生要点:</strong> 顺应自然，养护阳气。五脏养生重点是养“心”</p>
+                                    <p><strong>饮食:</strong> 注意保护肠胃，饮食宜清淡</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>小满</h3>
+                                <div class="date">5月20-22日</div>
+                                <div class="brief">清热利湿</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>小满养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 小满是夏季的第二个节气，要做好“防热除湿”的准备。</p>
+                                    <p><strong>饮食:</strong> ：以清爽清淡的素食为主，适当吃点苦味食物。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>芒种</h3>
+                                <div class="date">6月5-7日</div>
+                                <div class="brief">防暑降温</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>芒种养生</h4>
+                                <div class="advice-category">
+                                   <p><strong>养生要点:</strong> 芒种时节属于“长夏”范畴。祛湿防暑是关键</p>
+                                    <p><strong>饮食:</strong> 多食用新鲜的蔬菜和水果，如西瓜、黄瓜、苦瓜等，清热解暑，补充水分</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>夏至</h3>
+                                <div class="date">6月21-22日</div>
+                                <div class="brief">养阳护阴</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>夏至养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 真正迎来三伏天的高温酷暑。除防暑降温外，还要注意克制情绪，戒躁戒怒</p>
+                                    <p><strong>饮食:</strong>多吃养心、护心的食物，如大枣、葡萄、蓝莓、红小豆、莲子等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>小暑</h3>
+                                <div class="date">7月6-8日</div>
+                                <div class="brief">清热解暑</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>小暑养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 养生要“静养”，如早睡早起，避免大汗淋漓</p>
+                                    <p><strong>饮食:</strong> 以清泻暑热为目的，适当吃些苦味食物</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>大暑</h3>
+                                <div class="date">7月22-24日</div>
+                                <div class="brief">防暑祛湿</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>大暑养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 清暑益气、养阴生津，同时注意调养心神</p>
+                                    <p><strong>饮食:</strong> ：吃些清心降火、养心安神的食物，如：茯苓、麦冬、菊花、金银花、莲子</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 秋季 -->
+            <div class="season-card autumn">
+                <h2 class="season-title">秋季养生</h2>
+                <div class="solar-terms-container">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>立秋</h3>
+                                <div class="date">8月7-9日</div>
+                                <div class="brief">润肺防燥</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>立秋养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 避免秋燥伤肺，要注意润肺，还要防秋季腹泻来扰</p>
+                                    <p><strong>饮食:</strong>应以清凉解暑、滋阴润燥为主，别盲目贴秋膘</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>处暑</h3>
+                                <div class="date">8月22-24日</div>
+                                <div class="brief">清热安神</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>处暑养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 炎热暑天快要结束了，晚上不宜睡得太晚，不可贪凉</p>
+                                    <p><strong>饮食:</strong> 不宜进食辛辣刺激食物，以滋润的汤品为宜</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>白露</h3>
+                                <div class="date">9月7-9日</div>
+                                <div class="brief">滋阴润肺</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>白露养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 晚上睡觉不宜再多露身，以免夜里的寒凉之气侵入机体诱发疾病</p>
+                                    <p><strong>饮食:</strong> 适当多吃白色食物以养肺润燥，如山药、莲藕、银耳、百合等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>秋分</h3>
+                                <div class="date">9月22-24日</div>
+                                <div class="brief">平衡阴阳</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>秋分养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong>气候渐凉，此时应特别注意胃部保暖</p>
+                                    <p><strong>饮食:</strong> 南瓜性温味甘，能补中益气，是暖胃佳品，宜多食</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>寒露</h3>
+                                <div class="date">10月8-9日</div>
+                                <div class="brief">防寒润燥</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>寒露养生</h4>
+                                <div class="advice-category">
+                                   <p><strong>养生要点:</strong> 夜晚温度将会降得更低，要特别注意保暖，别再“秋冻”了</p>
+                                    <p><strong>饮食:</strong>燥气当令，要多食滋阴之物，包括银耳、百合、蜂蜜、花生等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>霜降</h3>
+                                <div class="date">10月23-24日</div>
+                                <div class="brief">补益肝肾</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>霜降养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 已经进入深秋，要注意保暖，预防鼻炎、胃肠炎等疾病的发生</p>
+                                    <p><strong>饮食:</strong> 适合清补、平补，以保暖润燥、健脾养胃为主</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 冬季 -->
+            <div class="season-card winter">
+                <h2 class="season-title">冬季养生</h2>
+                <div class="solar-terms-container">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>立冬</h3>
+                                <div class="date">11月7-8日</div>
+                                <div class="brief">补肾藏精</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>立冬养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong>立冬是一年中寒潮最多、气温下降最快的节气，应避寒就暖</p>
+                                    <p><strong>饮食:</strong> 适合吃些温补的粥类，比如莲子大枣小米粥、桂圆核桃芝麻栗子粥</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>小雪</h3>
+                                <div class="date">11月22-23日</div>
+                                <div class="brief">温补防寒</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>小雪养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 每天坚持按摩太溪穴，有助于滋养肾经</p>
+                                    <p><strong>饮食:</strong> 平时可试着生吃萝卜熟吃梨，吃萝卜可清热生津；吃梨可润肺清热、养阴生津，熟吃可避免寒凉太过</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>大雪</h3>
+                                <div class="date">12月6-8日</div>
+                                <div class="brief">温阳补肾</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>大雪养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 做好防寒保暖工作，尤其要护好头部、胸部和脚部这三个最易受寒的部位</p>
+                                    <p><strong>饮食:</strong> 适当食用温补性食物，如羊肉、大枣、桂圆等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>冬至</h3>
+                                <div class="date">12月21-23日</div>
+                                <div class="brief">养阳护阴</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>冬至养生</h4>
+                                <div class="advice-category">
+                                   <p><strong>养生要点:</strong>白天短夜晚长，应早睡晚起。冬主收藏，重在养肾</p>
+                                    <p><strong>饮食:</strong> 可适当多吃黑色的食材，如黑豆、黑芝麻、黑米、黑木耳、乌鸡等</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>小寒</h3>
+                                <div class="date">1月5-7日</div>
+                                <div class="brief">温补防寒</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>小寒养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 小寒是进补的大好时节，尤其是对肾脏的补益</p>
+                                    <p><strong>饮食:</strong> 怕冷的阳虚体质人群，可多食用羊肉、牛肉、海虾、核桃仁、韭菜等补阳的食物</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>大寒</h3>
+                                <div class="date">1月20-21日</div>
+                                <div class="brief">固本培元</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>大寒养生</h4>
+                                <div class="advice-category">
+                                    <p><strong>养生要点:</strong> 大寒是一年的最后一个节气，要注意外防寒，内滋阴</p>
+                                    <p><strong>饮食:</strong> 可摄取一些脂类热性食品，例如羊肉等，并配合药膳来对身体进行适当补益</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="data-source">
+        <small class="text-muted">数据来源：老年生活报</small>
+    </div>
+        </div>
+
+    </main>
+
+    
+</body>
+</html>

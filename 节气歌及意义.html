@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二十四节气歌与传统意义</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2c3e50',
+                        spring: '#2ecc71',
+                        summer: '#e74c3c',
+                        autumn: '#f39c12',
+                        winter: '#3498db',
+                    },
+                    fontFamily: {
+                        sans: ['Microsoft YaHei', 'sans-serif'],
+                        serif: ['SimSun', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .hover-scale {
+                transition: transform 0.3s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.03);
+            }
+            .scroll-reveal {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+            .scroll-reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .typing-animation {
+                overflow: hidden;
+                white-space: nowrap;
+                margin: 0 auto;
+                letter-spacing: 0.15em;
+                animation: typing 3.5s steps(40, end);
+            }
+            @keyframes typing {
+                from { width: 0 }
+                to { width: 100% }
+            }
+        }
+    </style>
+    
+    <style>
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 节气卡片颜色按季节分类 */
+        .spring-term {
+            border-left: 4px solid #2ecc71;
+        }
+        .summer-term {
+            border-left: 4px solid #e74c3c;
+        }
+        .autumn-term {
+            border-left: 4px solid #f39c12;
+        }
+        .winter-term {
+            border-left: 4px solid #3498db;
+        }
+        
+        /* 背景装饰 */
+        body {
+            background: url('images/背景2.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        /* 音频播放器样式 */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .play-btn {
+            background-color: #9de5b4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .play-btn:hover {
+            background-color: #90ccf3;
+            transform: scale(1.05);
+        }
+        .play-btn.playing {
+            background-color: #efa198;
+        }
+        .top-right-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.2rem;
+            
+        }
+        .top-left-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+             font-size: 1.2rem;
+        }
+
+        /* 统一图标动画效果 */
+        .top-right-link:hover .icon {
+            transform: translateX(5px);
+        }
+        .top-left-link:hover .icon {
+            transform: translateX(-5px);
+        }
+        /* 统一悬停颜色 */
+            .top-left-link:hover,
+            .top-right-link:hover {
+                color: #91e291;
+            }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <!-- 音频元素（隐藏） -->
+    <audio id="season-song" preload="auto">
+
+        <source src="images/节气歌.mp4" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+    <a href="历史渊源.html" class="top-left-link icon-link">
+        <span class="icon fas fa-arrow-left"></span>
+    </a>
+    <a href="气温.html" class="top-right-link icon-link">
+        <span class="icon fas fa-arrow-right"></span>
+    </a>
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 pt-16 pb-16">
+        <!-- 页面头部 -->
+        <section class="mb-16 text-center scroll-reveal">
+
+<h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4 
+           font-serif  <!-- 保留宋体 -->
+           bg-gradient-to-r from-spring via-primary to-autumn 
+           bg-clip-text text-transparent 
+           inline-block
+           drop-shadow-md"
+   style="font-family: SimSun, 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;">
+  二十四节气歌与传统意义
+</h1>
+        </section>
+        
+        <!-- 节气歌部分 -->
+        <section id="poem" 
+         class="mb-16 rounded-xl shadow-lg p-8 scroll-reveal bg-gradient-to-br from-[#b4f792]/50 to-[#92d9eb]/80">
+            <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-6 text-center">节气歌</h2>
+            <div class="poem-container relative">
+                <div class="typing-animation overflow-hidden whitespace-nowrap mx-auto text-center text-xl md:text-2xl font-serif leading-relaxed mb-6">
+                    <p class="mb-2">春雨惊春清谷天，夏满芒夏暑相连；</p>
+                    <p class="mb-2">秋处露秋寒霜降，冬雪雪冬小大寒。</p>
+                </div>
+                <div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 text-primary/20 text-5xl md:text-7xl font-bold">
+                    <i class="fa fa-quote-right"></i>
+                </div>
+            </div>
+            
+            <!-- 添加播放按钮 -->
+            <div class="audio-player">
+                <button id="play-btn" class="play-btn">
+                    <i class="fa fa-play"></i>
+                </button>
+            </div>
+        </section>
+        
+        <!-- 节气解释部分 -->
+        <section id="explanation" class="mb-16 scroll-reveal">
+            <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-8 text-center">二十四节气的传统含义</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 立春 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-calendar-check-o mr-2"></i>立春
+                    </h3>
+                    <p class="text-gray-700">春季开始，万物复苏，是二十四节气中的第一个节气。</p>
+                </div>
+                
+                <!-- 雨水 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-tint mr-2"></i>雨水
+                    </h3>
+                    <p class="text-gray-700">降雨开始，雨量渐增，空气湿度不断增大。</p>
+                </div>
+                
+                <!-- 惊蛰 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-bolt mr-2"></i>惊蛰
+                    </h3>
+                    <p class="text-gray-700">开始响雷，气温回升，冬眠动物复苏，万物开始生长。</p>
+                </div>
+                
+                <!-- 春分 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-sun-o mr-2"></i>春分
+                    </h3>
+                    <p class="text-gray-700">春季之中，昼夜平分，太阳直射赤道，气候温和。</p>
+                </div>
+                
+                <!-- 清明 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-leaf mr-2"></i>清明
+                    </h3>
+                    <p class="text-gray-700">气候温暖，草木萌动，天气清和明朗，万物皆显。</p>
+                </div>
+                
+                <!-- 谷雨 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale spring-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-spring mb-3 flex items-center">
+                        <i class="fa fa-cloud mr-2"></i>谷雨
+                    </h3>
+                    <p class="text-gray-700">降雨量增多，浮萍开始生长，桑树上开始见到蚕宝宝。</p>
+                </div>
+                
+                <!-- 立夏 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-sun-o mr-2"></i>立夏
+                    </h3>
+                    <p class="text-gray-700">夏季开始，气温显著升高，炎暑将临，雷雨增多。</p>
+                </div>
+                
+                <!-- 小满 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-balance-scale mr-2"></i>小满
+                    </h3>
+                    <p class="text-gray-700">麦类等夏熟作物子粒逐渐饱满，但尚未成熟。</p>
+                </div>
+                
+                <!-- 芒种 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-cutlery mr-2"></i>芒种
+                    </h3>
+                    <p class="text-gray-700">麦类等有芒作物成熟，夏种开始，是农事繁忙的时节。</p>
+                </div>
+                
+                <!-- 夏至 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-sun-o mr-2"></i>夏至
+                    </h3>
+                    <p class="text-gray-700">夏天到，此时白天最长，夜晚最短，阳气最盛。</p>
+                </div>
+                
+                <!-- 小暑 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-fire mr-2"></i>小暑
+                    </h3>
+                    <p class="text-gray-700">正当初伏前后，气候开始炎热，但还未达到最热。</p>
+                </div>
+                
+                <!-- 大暑 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale summer-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-summer mb-3 flex items-center">
+                        <i class="fa fa-bolt mr-2"></i>大暑
+                    </h3>
+                    <p class="text-gray-700">为一年中最炎热的季节，气温最高，农作物生长最快。</p>
+                </div>
+                
+                <!-- 立秋 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-leaf mr-2"></i>立秋
+                    </h3>
+                    <p class="text-gray-700">秋季开始，气温逐渐下降，暑气渐消，凉爽将至。</p>
+                </div>
+                
+                <!-- 处暑 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-calendar-times-o mr-2"></i>处暑
+                    </h3>
+                    <p class="text-gray-700">"处"有躲藏、终止之意，表示炎热即将过去，暑气至此而止。</p>
+                </div>
+                
+                <!-- 白露 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-snowflake-o mr-2"></i>白露
+                    </h3>
+                    <p class="text-gray-700">因夜间较凉，空气中的水气往往凝成露水，气温开始下降。</p>
+                </div>
+                
+                <!-- 秋分 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-sun-o mr-2"></i>秋分
+                    </h3>
+                    <p class="text-gray-700">秋季中间，昼夜平分，太阳直射赤道，气候凉爽宜人。</p>
+                </div>
+                
+                <!-- 寒露 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-thermometer-quarter mr-2"></i>寒露
+                    </h3>
+                    <p class="text-gray-700">气温明显降低，夜间露水很凉，标志着天气由凉爽向寒冷过渡。</p>
+                </div>
+                
+                <!-- 霜降 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale autumn-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-autumn mb-3 flex items-center">
+                        <i class="fa fa-snowflake-o mr-2"></i>霜降
+                    </h3>
+                    <p class="text-gray-700">天气渐冷，开始降霜，昼夜温差变化增大，万物开始凋零。</p>
+                </div>
+                
+                <!-- 立冬 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-s snowflake-o mr-2"></i>立冬
+                    </h3>
+                    <p class="text-gray-700">冬季开始，万物收藏，规避寒冷，农作物收割后要收藏起来。</p>
+                </div>
+                
+                <!-- 小雪 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-snowflake-o mr-2"></i>小雪
+                    </h3>
+                    <p class="text-gray-700">开始降雪，但雪量不大，地面上无积雪或积雪不深。</p>
+                </div>
+                
+                <!-- 大雪 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-snowflake-o mr-2"></i>大雪
+                    </h3>
+                    <p class="text-gray-700">降雪较大，地面可能积雪，天气寒冷，黄河流域一带渐有积雪。</p>
+                </div>
+                
+                <!-- 冬至 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-sun-o mr-2"></i>冬至
+                    </h3>
+                    <p class="text-gray-700">进入"数九"寒天，白天最短，夜晚最长，阳气开始回升。</p>
+                </div>
+                
+                <!-- 小寒 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-thermometer-half mr-2"></i>小寒
+                    </h3>
+                    <p class="text-gray-700">气候已比较寒冷，但还未达到最冷，民间有"小寒大寒，冷成冰团"的说法。</p>
+                </div>
+                
+                <!-- 大寒 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover-scale winter-term scroll-reveal">
+                    <h3 class="text-xl font-bold text-winter mb-3 flex items-center">
+                        <i class="fa fa-thermometer-empty mr-2"></i>大寒
+                    </h3>
+                    <p class="text-gray-700">为一年中最冷的时节，风大，低温，地面积雪不化，呈现出冰天雪地的严寒景象。</p>
+                </div>
+            </div>
+        </section>
+        
+       
+    </main>
+    
+    <!-- 页脚 -->
+   <footer class="bg-gradient-to-r from-blue-300 to-green-200 text-white py-6"> <!-- 蓝到紫渐变 -->
+        <div class="container mx-auto px-3 text-center">
+            <p>传承和弘扬传统节气文化，感受自然与时间的智慧</p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+       
+            // 滚动显示动画
+            const elements = document.querySelectorAll('.scroll-reveal');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('active');
+                }
+            });
+        
+        
+       
+        
+        window.addEventListener('scroll', function() {
+ 
+    const elements = document.querySelectorAll('.scroll-reveal');
+    elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+        
+        if (elementPosition < screenPosition) {
+            element.classList.add('active');
+        }
+    });
+});
+        
+        // 音频播放控制
+        const audioPlayer = document.getElementById('season-song');
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = playBtn.querySelector('i');
+        
+        playBtn.addEventListener('click', function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playBtn.classList.add('playing');
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                audioPlayer.pause();
+                playBtn.classList.remove('playing');
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        });
+        
+        // 音频播放结束时重置按钮状态
+        audioPlayer.addEventListener('ended', function() {
+            playBtn.classList.remove('playing');
+            playIcon.classList.remove('fa-pause');
+            playIcon.classList.add('fa-play');
+        });
+    </script>
+</body>
+</html>
